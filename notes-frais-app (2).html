@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Notes Frais">
+<meta name="theme-color" content="#e8e4d9">
+<title>Notes de Frais</title>
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Notes%20de%20Frais%22%2C%22short_name%22%3A%22Notes%20Frais%22%2C%22description%22%3A%22Gestion%20des%20notes%20de%20frais%20avec%20analyse%20IA%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f0ece3%22%2C%22theme_color%22%3A%22%23e8e4d9%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%253D'http%253A%252F%252Fwww.w3.org%252F2000%252Fsvg'%2520viewBox%253D'0%25200%2520192%2520192'%253E%253Crect%2520width%253D'192'%2520height%253D'192'%2520rx%253D'40'%2520fill%253D'%2523e8e4d9'%252F%253E%253Ctext%2520x%253D'96'%2520y%253D'130'%2520font-size%253D'110'%2520text-anchor%253D'middle'%253E%25F0%259F%25A7%25BE%253C%252Ftext%253E%253C%252Fsvg%253E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f0ece3;--bg2:#e8e4d9;--bg3:#dedad0;
+  --border:rgba(90,100,80,0.12);--border2:rgba(90,100,80,0.22);
+  --text:#2e3028;--text2:#7a7d6e;--text3:#aaa99a;
+  --accent:#6b8f6b;--accent-dim:rgba(107,143,107,0.14);
+  --accent-dark:#4e6e4e;
+  --blue:#5e82a0;--blue-dim:rgba(94,130,160,0.13);
+  --green:#6b8f6b;--green-dim:rgba(107,143,107,0.14);
+  --red:#b05c5c;--red-dim:rgba(176,92,92,0.12);
+  --amber:#a07840;--amber-dim:rgba(160,120,64,0.13);
+  --radius:16px;--radius-sm:10px;
+  --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --shadow: 0 1px 3px rgba(60,60,40,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font);overflow:hidden}
+.app{display:flex;flex-direction:column;height:100%;max-width:480px;margin:0 auto;position:relative}
+.screen{display:none;flex-direction:column;flex:1;overflow:hidden}
+.screen.active{display:flex}
+.scroll-area{flex:1;overflow-y:auto;padding:0 16px 16px;-webkit-overflow-scrolling:touch}
+.scroll-area::-webkit-scrollbar{display:none}
+.topbar{padding:16px 16px 0;display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0}
+.topbar-title{font-size:22px;font-weight:600;letter-spacing:-0.5px;color:var(--text)}
+.topbar-sub{font-size:13px;color:var(--text2);margin-top:2px}
+.topbar-badge{background:var(--accent-dim);color:var(--accent-dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;font-family:var(--mono);margin-top:4px;border:0.5px solid rgba(107,143,107,0.25)}
+.bottom-nav{display:flex;background:var(--bg2);border-top:0.5px solid var(--border);padding-bottom:var(--safe-bottom);flex-shrink:0;box-shadow:0 -1px 0 rgba(90,100,80,0.07)}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0;border:none;background:none;color:var(--text3);cursor:pointer;font-family:var(--font);transition:color 0.15s}
+.nav-btn.active{color:var(--accent)}
+.nav-btn svg{width:22px;height:22px}
+.nav-btn span{font-size:10px;font-weight:500}
+.card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
+.card-title{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px}
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.metric{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:14px;box-shadow:var(--shadow)}
+.metric-label{font-size:11px;color:var(--text3);margin-bottom:6px;font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
+.metric-value{font-size:19px;font-weight:600;font-family:var(--mono);letter-spacing:-0.5px;color:var(--text)}
+.metric-sub{font-size:11px;color:var(--text3);margin-top:3px}
+.metric.hi{border-color:rgba(107,143,107,0.3);background:rgba(107,143,107,0.07)}.metric.hi .metric-value{color:var(--accent-dark)}
+.btn-big{width:100%;padding:16px;border-radius:var(--radius);border:none;font-family:var(--font);font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.15s}
+.btn-big:active{transform:scale(0.97)}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(107,143,107,0.3)}
+.btn-primary:hover{background:var(--accent-dark)}
+.btn-camera{background:var(--bg3);border:1.5px dashed var(--border2);color:var(--text2);margin-top:10px}
+.btn-camera:active{background:var(--bg2)}
+.btn-sm{padding:8px 14px;border-radius:var(--radius-sm);border:0.5px solid var(--border2);background:none;color:var(--text);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer}
+.btn-sm:active{background:var(--bg3)}
+.btn-sm.ac{border-color:var(--accent);color:var(--accent-dark);background:var(--accent-dim)}
+.btn-sm.da{border-color:var(--red);color:var(--red)}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;color:var(--text2);margin-bottom:6px;font-weight:500}
+.field input,.field select{width:100%;padding:12px 14px;background:var(--bg3);border:0.5px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:15px;-webkit-appearance:none;transition:border-color 0.15s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--accent);background:var(--bg2)}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7d6e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.pay-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.pay-opt{padding:14px;border-radius:var(--radius-sm);border:0.5px solid var(--border2);background:none;color:var(--text2);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;text-align:center;transition:all 0.15s}
+.pay-opt.sel-cb{background:var(--blue-dim);border-color:var(--blue);color:var(--blue)}
+.pay-opt.sel-pro{background:var(--green-dim);border-color:var(--accent);color:var(--accent-dark)}
+.preview-wrap{position:relative;margin-bottom:16px;border-radius:var(--radius-sm);overflow:hidden;background:var(--bg3);border:0.5px solid var(--border)}
+.preview-img{width:100%;max-height:200px;object-fit:contain;display:block}
+.preview-badge{position:absolute;top:8px;right:8px;background:rgba(107,143,107,0.85);color:#fff;font-size:11px;padding:4px 8px;border-radius:20px;font-weight:600}
+.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;font-family:var(--mono)}
+.badge-cb{background:var(--blue-dim);color:var(--blue)}
+.badge-pro{background:var(--green-dim);color:var(--accent-dark)}
+.tx-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:0.5px solid var(--border)}
+.tx-item:last-child{border-bottom:none}
+.tx-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:var(--bg3);border:0.5px solid var(--border)}
+.tx-body{flex:1;min-width:0}
+.tx-name{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
+.tx-meta{font-size:12px;color:var(--text3);margin-top:2px}
+.tx-amount{text-align:right;flex-shrink:0}
+.tx-ttc{font-size:15px;font-weight:600;font-family:var(--mono);color:var(--text)}
+.tx-tva{font-size:11px;color:var(--text3);margin-top:2px;font-family:var(--mono)}
+.tx-del{background:none;border:none;color:var(--text3);cursor:pointer;padding:6px;border-radius:8px;font-size:16px}
+.tx-del:active{background:var(--red-dim);color:var(--red)}
+.spinner-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;gap:12px}
+.spinner{width:32px;height:32px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner-label{font-size:14px;color:var(--text2)}
+.toast{position:absolute;bottom:calc(72px + var(--safe-bottom) + 12px);left:16px;right:16px;padding:14px 16px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;display:none;z-index:100;animation:slideup 0.2s ease}
+@keyframes slideup{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
+.toast-ok{background:var(--green-dim);border:0.5px solid var(--accent);color:var(--accent-dark)}
+.toast-err{background:var(--red-dim);border:0.5px solid var(--red);color:var(--red)}
+.toast-info{background:var(--blue-dim);border:0.5px solid var(--blue);color:var(--blue)}
+.section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin:20px 0 10px}
+.q-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;box-shadow:var(--shadow)}
+.q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.q-name{font-size:15px;font-weight:600;color:var(--text)}
+.q-tag{font-size:11px;background:var(--amber-dim);color:var(--amber);padding:3px 8px;border-radius:20px;font-family:var(--mono);border:0.5px solid rgba(160,120,64,0.2)}
+.q-tag.empty{background:var(--bg3);color:var(--text3);border-color:var(--border)}
+.q-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:0.5px solid var(--border)}
+.q-row:last-child{border-bottom:none}
+.q-row span:first-child{color:var(--text2)}
+.q-row span:last-child{font-family:var(--mono);font-weight:500;color:var(--text)}
+.q-row.hl span:last-child{color:var(--blue)}
+.cat-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--border)}
+.cat-row:last-child{border-bottom:none}
+.cat-name{font-size:13px;font-weight:500;min-width:90px;color:var(--text)}
+.cat-bar-wrap{flex:1;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.cat-bar{height:100%;background:var(--accent);border-radius:2px;transition:width 0.4s ease}
+.cat-amount{font-size:13px;font-family:var(--mono);color:var(--text2);min-width:76px;text-align:right}
+.pdf-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.pdf-opt{padding:16px 12px;border-radius:var(--radius-sm);border:0.5px solid var(--border2);background:none;color:var(--text);font-family:var(--font);cursor:pointer;text-align:center;transition:all 0.15s}
+.pdf-opt:active,.pdf-opt.sel{border-color:var(--accent);color:var(--accent-dark);background:var(--accent-dim)}
+.pdf-opt-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.pdf-opt-sub{font-size:11px;color:var(--text3)}
+.export-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.empty{text-align:center;padding:48px 24px}
+.empty-icon{font-size:40px;margin-bottom:12px}
+.empty-title{font-size:16px;font-weight:600;margin-bottom:6px;color:var(--text)}
+.empty-sub{font-size:13px;color:var(--text3)}
+.install-banner{background:var(--accent-dim);border:0.5px solid rgba(107,143,107,0.3);border-radius:var(--radius-sm);padding:12px 14px;margin:12px 16px 0;display:flex;align-items:center;gap:10px}
+.install-text{flex:1;font-size:12px;color:var(--accent-dark);line-height:1.4}
+.install-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px}
+input[type=file]{display:none}
+input[type=date]{color-scheme:light}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="install-banner" id="install-banner">
+  <span style="font-size:20px">📲</span>
+  <div class="install-text">Ajoutez l'app à votre écran d'accueil : menu du navigateur → "Sur l'écran d'accueil"</div>
+  <button class="install-close" onclick="this.parentElement.style.display='none'">✕</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- SCAN -->
+<div class="screen active" id="screen-scan">
+  <div class="topbar">
+    <div><div class="topbar-title">Scanner</div><div class="topbar-sub">Ajouter une facture</div></div>
+    <div class="topbar-badge" id="tx-count-badge">0 tx</div>
+  </div>
+  <div class="scroll-area" style="padding-top:16px">
+
+    <div id="state-capture">
+      <button class="btn-big btn-primary" onclick="document.getElementById('cam-input').click()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        Prendre une photo
+      </button>
+      <input type="file" id="cam-input" accept="image/*" capture="environment" onchange="handleFile(event)">
+      <button class="btn-big btn-camera" onclick="document.getElementById('file-input').click()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Importer PDF ou image
+      </button>
+      <input type="file" id="file-input" accept="image/*,application/pdf" onchange="handleFile(event)">
+    </div>
+
+    <div id="state-pdf" style="display:none">
+      <div class="card">
+        <div class="card-title">Fichier PDF détecté</div>
+        <div class="pdf-choice">
+          <button class="pdf-opt" onclick="choosePDF('ai')"><div class="pdf-opt-title">Analyse IA</div><div class="pdf-opt-sub">Extraction automatique</div></button>
+          <button class="pdf-opt" onclick="choosePDF('manual')"><div class="pdf-opt-title">Saisie manuelle</div><div class="pdf-opt-sub">Remplissage direct</div></button>
+        </div>
+        <button class="btn-sm da" onclick="resetScan()">Annuler</button>
+      </div>
+    </div>
+
+    <div id="state-analyzing" style="display:none">
+      <div class="card">
+        <div class="spinner-wrap">
+          <div class="spinner"></div>
+          <div class="spinner-label" id="analyze-label">Analyse de la facture...</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="state-form" style="display:none">
+      <div class="preview-wrap" id="preview-wrap">
+        <img id="preview-img" class="preview-img" src="" alt="">
+        <div class="preview-badge" id="preview-badge"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Mode de paiement</div>
+        <div class="pay-toggle">
+          <button class="pay-opt" id="btn-cb" onclick="setPay('cb')">CB personnelle</button>
+          <button class="pay-opt" id="btn-pro" onclick="setPay('pro')">Compte pro</button>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Fournisseur</label><input id="f-supplier" type="text" placeholder="Nom"></div>
+          <div class="field"><label>Date</label><input id="f-date" type="date"></div>
+        </div>
+        <div class="field-row3">
+          <div class="field"><label>HT (€)</label><input id="f-ht" type="number" step="0.01" inputmode="decimal" placeholder="0.00" oninput="calcTTC()"></div>
+          <div class="field"><label>TVA (€)</label><input id="f-tva" type="number" step="0.01" inputmode="decimal" placeholder="0.00" oninput="calcTTC()"></div>
+          <div class="field"><label>TTC (€)</label><input id="f-ttc" type="number" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Catégorie</label>
+            <select id="f-cat"><option>Restauration</option><option>Transport</option><option>Hébergement</option><option>Fournitures</option><option>Télécom</option><option>Logiciels</option><option>Formation</option><option>Marketing</option><option>Autre</option></select>
+          </div>
+          <div class="field"><label>N° facture</label><input id="f-num" type="text" placeholder="FAC-001"></div>
+        </div>
+        <div class="field"><label>Description</label><input id="f-desc" type="text" placeholder="Description courte"></div>
+        <button class="btn-big btn-primary" onclick="saveTx()" style="margin-top:8px">Enregistrer</button>
+        <div style="margin-top:8px;text-align:center"><button class="btn-sm da" onclick="resetScan()">Annuler</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSACTIONS -->
+<div class="screen" id="screen-transactions">
+  <div class="topbar">
+    <div><div class="topbar-title">Transactions</div><div class="topbar-sub" id="tx-sub">Toutes les factures</div></div>
+    <select id="fil-q" style="background:var(--bg3);border:0.5px solid var(--border2);border-radius:var(--radius-sm);padding:6px 10px;color:var(--text);font-family:var(--font);font-size:12px;-webkit-appearance:none;margin-top:4px" onchange="renderTx()">
+      <option value="">Tous</option><option value="Q1">T1</option><option value="Q2">T2</option><option value="Q3">T3</option><option value="Q4">T4</option>
+    </select>
+  </div>
+  <div class="scroll-area" style="padding-top:12px">
+    <div class="metric-grid">
+      <div class="metric hi"><div class="metric-label">Total TTC</div><div class="metric-value" id="m-ttc">0 €</div></div>
+      <div class="metric"><div class="metric-label">TVA déductible</div><div class="metric-value" id="m-tva" style="color:var(--blue)">0 €</div></div>
+      <div class="metric"><div class="metric-label">CB perso</div><div class="metric-value" id="m-cb">0 €</div><div class="metric-sub">à rembourser</div></div>
+      <div class="metric"><div class="metric-label">Compte pro</div><div class="metric-value" id="m-pro">0 €</div></div>
+    </div>
+    <div class="section-title">Factures</div>
+    <div class="card" style="padding:0 16px"><div id="tx-list"></div></div>
+    <div class="section-title">Exporter</div>
+    <div class="export-row">
+      <button class="btn-sm" onclick="dlCSV()">CSV</button>
+      <button class="btn-sm" onclick="dlXLS()">Excel</button>
+      <button class="btn-sm ac" onclick="dlPDF('transactions')">PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- TVA -->
+<div class="screen" id="screen-tva">
+  <div class="topbar"><div><div class="topbar-title">Déclaration TVA</div><div class="topbar-sub">Régime trimestriel réel</div></div></div>
+  <div class="scroll-area" style="padding-top:12px">
+    <div id="tva-content"></div>
+    <div class="section-title">Exporter</div>
+    <div class="export-row">
+      <button class="btn-sm" onclick="dlCSV('tva')">CSV TVA</button>
+      <button class="btn-sm ac" onclick="dlPDF('tva')">PDF TVA</button>
+    </div>
+  </div>
+</div>
+
+<!-- COMPTES -->
+<div class="screen" id="screen-comptes">
+  <div class="topbar"><div><div class="topbar-title">Comptes annuels</div><div class="topbar-sub">Charges par catégorie</div></div></div>
+  <div class="scroll-area" style="padding-top:12px">
+    <div id="comptes-content"></div>
+    <div class="section-title">Exporter</div>
+    <div class="export-row">
+      <button class="btn-sm" onclick="dlCSV('comptes')">CSV charges</button>
+      <button class="btn-sm ac" onclick="dlPDF('comptes')">PDF bilan</button>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="goScreen('scan',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+    <span>Scanner</span>
+  </button>
+  <button class="nav-btn" onclick="goScreen('transactions',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+    <span>Factures</span>
+  </button>
+  <button class="nav-btn" onclick="goScreen('tva',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    <span>TVA</span>
+  </button>
+  <button class="nav-btn" onclick="goScreen('comptes',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span>Comptes</span>
+  </button>
+</nav>
+
+</div>
+
+<script>
+const SK='ndf_v2';
+let transactions=JSON.parse(localStorage.getItem(SK)||'[]');
+let currentPay='',currentB64='',currentMime='';
+const icons={Restauration:'🍽️',Transport:'🚗',Hébergement:'🏨',Fournitures:'📦',Télécom:'📡',Logiciels:'💻',Formation:'📚',Marketing:'📣',Autre:'📎'};
+
+function save(){localStorage.setItem(SK,JSON.stringify(transactions));document.getElementById('tx-count-badge').textContent=transactions.length+' tx';}
+function fmt(n){return parseFloat(n||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
+function getQ(d){const m=new Date(d).getMonth()+1;return m<=3?'Q1':m<=6?'Q2':m<=9?'Q3':'Q4';}
+
+function showToast(msg,type='ok'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast toast-'+type;t.style.display='block';
+  setTimeout(()=>t.style.display='none',2800);
+}
+
+function goScreen(name,el){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  el.classList.add('active');
+  if(name==='transactions')renderTx();
+  if(name==='tva')renderTVA();
+  if(name==='comptes')renderComptes();
+}
+
+function setState(name,show){
+  ['capture','pdf','analyzing','form'].forEach(s=>{
+    document.getElementById('state-'+s).style.display=(s===name&&show)?'block':'none';
+  });
+}
+
+function handleFile(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    currentB64=ev.target.result;currentMime=file.type;
+    setState('capture',false);
+    if(file.type==='application/pdf'){setState('pdf',true);}
+    else{setState('analyzing',true);document.getElementById('analyze-label').textContent="L'IA analyse votre facture...";extractAI();}
+  };
+  reader.readAsDataURL(file);
+}
+
+function choosePDF(mode){
+  setState('pdf',false);
+  if(mode==='manual'){fillForm({});}
+  else{setState('analyzing',true);document.getElementById('analyze-label').textContent="Extraction du PDF...";extractAI();}
+}
+
+async function extractAI(){
+  const isImg=currentMime.startsWith('image/');
+  const prompt=`Analyse cette facture. Retourne UNIQUEMENT du JSON valide (sans markdown) avec: {"supplier":"","date":"YYYY-MM-DD","ht":0,"tva":0,"ttc":0,"invoice_number":"","category":"parmi Restauration Transport Hébergement Fournitures Télécom Logiciels Formation Marketing Autre","description":""}`;
+  let content=isImg?
+    [{type:'image',source:{type:'base64',media_type:currentMime,data:currentB64.split(',')[1]}},{type:'text',text:prompt}]:
+    [{type:'document',source:{type:'base64',media_type:'application/pdf',data:currentB64.split(',')[1]}},{type:'text',text:prompt}];
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content}]})});
+    const d=await r.json();
+    const txt=(d.content||[]).map(c=>c.text||'').join('');
+    let ex={};try{ex=JSON.parse(txt.replace(/```json|```/g,'').trim());}catch(e){}
+    fillForm(ex);
+    if(ex.supplier)showToast('Extraction IA réussie ✓','info');
+  }catch(e){fillForm({});showToast('Saisie manuelle requise','err');}
+}
+
+function fillForm(d){
+  setState('analyzing',false);setState('form',true);
+  const pw=document.getElementById('preview-wrap'),pi=document.getElementById('preview-img');
+  if(currentMime.startsWith('image/')){pi.src=currentB64;pw.style.display='block';document.getElementById('preview-badge').textContent=d.supplier?'IA ✓':'';}
+  else{pw.style.display='none';}
+  document.getElementById('f-supplier').value=d.supplier||'';
+  document.getElementById('f-date').value=d.date||new Date().toISOString().slice(0,10);
+  document.getElementById('f-ht').value=d.ht!=null?parseFloat(d.ht).toFixed(2):'';
+  document.getElementById('f-tva').value=d.tva!=null?parseFloat(d.tva).toFixed(2):'';
+  document.getElementById('f-ttc').value=d.ttc!=null?parseFloat(d.ttc).toFixed(2):'';
+  document.getElementById('f-num').value=d.invoice_number||'';
+  document.getElementById('f-desc').value=d.description||'';
+  const cats=['Restauration','Transport','Hébergement','Fournitures','Télécom','Logiciels','Formation','Marketing','Autre'];
+  if(d.category&&cats.includes(d.category))document.getElementById('f-cat').value=d.category;
+  currentPay='';
+  document.getElementById('btn-cb').className='pay-opt';
+  document.getElementById('btn-pro').className='pay-opt';
+}
+
+function setPay(v){
+  currentPay=v;
+  document.getElementById('btn-cb').className='pay-opt'+(v==='cb'?' sel-cb':'');
+  document.getElementById('btn-pro').className='pay-opt'+(v==='pro'?' sel-pro':'');
+}
+
+function calcTTC(){
+  const ht=parseFloat(document.getElementById('f-ht').value)||0;
+  const tva=parseFloat(document.getElementById('f-tva').value)||0;
+  if(ht&&tva)document.getElementById('f-ttc').value=(ht+tva).toFixed(2);
+}
+
+function saveTx(){
+  if(!currentPay){showToast('Sélectionnez un mode de paiement','err');return;}
+  const ttc=parseFloat(document.getElementById('f-ttc').value)||0;
+  const date=document.getElementById('f-date').value;
+  if(!date||!ttc){showToast('Date et TTC obligatoires','err');return;}
+  transactions.push({id:Date.now(),supplier:document.getElementById('f-supplier').value,date,quarter:getQ(date),ht:parseFloat(document.getElementById('f-ht').value)||0,tva:parseFloat(document.getElementById('f-tva').value)||0,ttc,invoice_number:document.getElementById('f-num').value,category:document.getElementById('f-cat').value,description:document.getElementById('f-desc').value,payment:currentPay==='cb'?'CB perso':'Compte pro'});
+  save();resetScan();showToast('Facture enregistrée ✓');
+}
+
+function resetScan(){
+  setState('capture',true);setState('pdf',false);setState('analyzing',false);setState('form',false);
+  document.getElementById('cam-input').value='';document.getElementById('file-input').value='';
+  currentPay='';currentB64='';currentMime='';
+}
+
+function getFiltered(){
+  const q=document.getElementById('fil-q').value;
+  return transactions.filter(t=>!q||t.quarter===q).sort((a,b)=>b.date.localeCompare(a.date));
+}
+
+function renderTx(){
+  const rows=getFiltered();
+  document.getElementById('m-ttc').textContent=fmt(rows.reduce((a,t)=>a+(t.ttc||0),0));
+  document.getElementById('m-tva').textContent=fmt(rows.reduce((a,t)=>a+(t.tva||0),0));
+  document.getElementById('m-cb').textContent=fmt(rows.filter(t=>t.payment==='CB perso').reduce((a,t)=>a+(t.ttc||0),0));
+  document.getElementById('m-pro').textContent=fmt(rows.filter(t=>t.payment==='Compte pro').reduce((a,t)=>a+(t.ttc||0),0));
+  document.getElementById('tx-sub').textContent=rows.length+' facture'+(rows.length!==1?'s':'');
+  const list=document.getElementById('tx-list');
+  if(!rows.length){list.innerHTML=`<div class="empty" style="padding:32px 0"><div class="empty-icon">🧾</div><div class="empty-title">Aucune facture</div><div class="empty-sub">Scannez votre première facture</div></div>`;return;}
+  list.innerHTML=rows.map(t=>`<div class="tx-item">
+    <div class="tx-icon">${icons[t.category]||'📎'}</div>
+    <div class="tx-body"><div class="tx-name">${t.supplier||'—'}</div><div class="tx-meta">${t.date} · <span class="badge badge-${t.payment==='CB perso'?'cb':'pro'}">${t.payment}</span></div></div>
+    <div class="tx-amount"><div class="tx-ttc">${fmt(t.ttc)}</div><div class="tx-tva">TVA ${fmt(t.tva)}</div></div>
+    <button class="tx-del" onclick="delTx(${t.id})">✕</button>
+  </div>`).join('');
+}
+
+function delTx(id){if(!confirm('Supprimer ?'))return;transactions=transactions.filter(t=>t.id!==id);save();renderTx();showToast('Supprimé');}
+
+function renderTVA(){
+  const qs=['Q1','Q2','Q3','Q4'],lb={Q1:'T1 — Jan à Mar',Q2:'T2 — Avr à Juin',Q3:'T3 — Juil à Sep',Q4:'T4 — Oct à Déc'};
+  const tHT=transactions.reduce((a,t)=>a+(t.ht||0),0),tTVA=transactions.reduce((a,t)=>a+(t.tva||0),0);
+  document.getElementById('tva-content').innerHTML=qs.map(q=>{
+    const txs=transactions.filter(t=>t.quarter===q);
+    const ht=txs.reduce((a,t)=>a+(t.ht||0),0),tva=txs.reduce((a,t)=>a+(t.tva||0),0),ttc=txs.reduce((a,t)=>a+(t.ttc||0),0);
+    return `<div class="q-card"><div class="q-header"><div class="q-name">${lb[q]}</div><div class="q-tag ${!txs.length?'empty':''}">${txs.length} facture${txs.length!==1?'s':''}</div></div>
+      <div class="q-row"><span>Base HT</span><span>${fmt(ht)}</span></div>
+      <div class="q-row hl"><span>TVA déductible</span><span>${fmt(tva)}</span></div>
+      <div class="q-row"><span>Total TTC</span><span>${fmt(ttc)}</span></div>
+    </div>`;
+  }).join('')+`<div class="q-card" style="border-color:rgba(107,143,107,0.3);background:rgba(107,143,107,0.06)">
+    <div class="q-row"><span>HT cumulé</span><span style="font-family:var(--mono);font-weight:500">${fmt(tHT)}</span></div>
+    <div class="q-row hl"><span>TVA totale récupérable</span><span style="font-weight:600;color:var(--blue)">${fmt(tTVA)}</span></div>
+  </div>`;
+}
+
+function renderComptes(){
+  const cats={};
+  transactions.forEach(t=>{if(!cats[t.category])cats[t.category]={ht:0,tva:0,n:0};cats[t.category].ht+=t.ht||0;cats[t.category].tva+=t.tva||0;cats[t.category].n++;});
+  const tHT=transactions.reduce((a,t)=>a+(t.ht||0),0),tTVA=transactions.reduce((a,t)=>a+(t.tva||0),0);
+  const el=document.getElementById('comptes-content');
+  if(!Object.keys(cats).length){el.innerHTML=`<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">Aucune donnée</div><div class="empty-sub">Scannez vos factures d'abord</div></div>`;return;}
+  el.innerHTML=`<div class="metric-grid" style="margin-bottom:12px">
+    <div class="metric hi"><div class="metric-label">Charges HT</div><div class="metric-value">${fmt(tHT)}</div></div>
+    <div class="metric"><div class="metric-label">TVA récupérable</div><div class="metric-value" style="color:var(--blue)">${fmt(tTVA)}</div></div>
+  </div><div class="card">
+    <div class="card-title">Répartition des charges</div>
+    ${Object.entries(cats).sort((a,b)=>b[1].ht-a[1].ht).map(([cat,v])=>{
+      const pct=tHT?(v.ht/tHT*100).toFixed(1):0;
+      return `<div class="cat-row"><div style="font-size:18px;width:26px">${icons[cat]||'📎'}</div>
+        <div class="cat-name">${cat}<div style="font-size:11px;color:var(--text3);margin-top:2px">${v.n} facture${v.n!==1?'s':''}</div></div>
+        <div class="cat-bar-wrap"><div class="cat-bar" style="width:${pct}%"></div></div>
+        <div class="cat-amount">${fmt(v.ht)}</div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function csvRow(cols){return cols.map(c=>`"${String(c||'').replace(/"/g,'""')}"`).join(',');}
+
+function dlCSV(type){
+  let rows,name;
+  if(type==='tva'){
+    rows=[csvRow(['Trimestre','Base HT','TVA déductible','Nb factures'])];
+    ['Q1','Q2','Q3','Q4'].forEach(q=>{const txs=transactions.filter(t=>t.quarter===q);rows.push(csvRow([q,txs.reduce((a,t)=>a+(t.ht||0),0).toFixed(2),txs.reduce((a,t)=>a+(t.tva||0),0).toFixed(2),txs.length]));});
+    name='declaration_tva.csv';
+  }else if(type==='comptes'){
+    const cats={};transactions.forEach(t=>{if(!cats[t.category])cats[t.category]={ht:0,tva:0,n:0};cats[t.category].ht+=t.ht||0;cats[t.category].tva+=t.tva||0;cats[t.category].n++;});
+    rows=[csvRow(['Catégorie','Nb factures','Charges HT','TVA récupérable'])];
+    Object.entries(cats).forEach(([c,v])=>rows.push(csvRow([c,v.n,v.ht.toFixed(2),v.tva.toFixed(2)])));
+    name='comptes_annuels.csv';
+  }else{
+    rows=[csvRow(['Date','Fournisseur','Catégorie','Paiement','HT','TVA','TTC','Trimestre'])];
+    getFiltered().forEach(t=>rows.push(csvRow([t.date,t.supplier,t.category,t.payment,t.ht,t.tva,t.ttc,t.quarter])));
+    name='notes_frais.csv';
+  }
+  dl(name,rows.join('\n'),'text/csv');
+}
+
+function dlXLS(){
+  const rows=[['Date','Fournisseur','Catégorie','Paiement','HT','TVA','TTC','Trimestre']];
+  getFiltered().forEach(t=>rows.push([t.date,t.supplier,t.category,t.payment,t.ht,t.tva,t.ttc,t.quarter]));
+  let xml=`<?xml version="1.0"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Worksheet ss:Name="Notes de frais"><Table>`;
+  rows.forEach(r=>{xml+=`<Row>`;r.forEach(c=>{xml+=`<Cell><Data ss:Type="${typeof c==='number'?'Number':'String'}">${c||''}</Data></Cell>`;});xml+=`</Row>`;});
+  xml+=`</Table></Worksheet></Workbook>`;
+  dl('notes_frais.xls',xml,'application/vnd.ms-excel');
+}
+
+function dlPDF(type){
+  const date=new Date().toLocaleDateString('fr-FR');
+  let title,content;
+  if(type==='tva'){
+    title='Déclaration TVA trimestrielle';
+    const qs=['Q1','Q2','Q3','Q4'],lb={Q1:'T1',Q2:'T2',Q3:'T3',Q4:'T4'};
+    const tHT=transactions.reduce((a,t)=>a+(t.ht||0),0),tTVA=transactions.reduce((a,t)=>a+(t.tva||0),0);
+    content=`<table><thead><tr><th>Trimestre</th><th>Base HT</th><th>TVA déductible</th><th>Factures</th></tr></thead><tbody>
+      ${qs.map(q=>{const txs=transactions.filter(t=>t.quarter===q);return`<tr><td>${lb[q]}</td><td>${txs.reduce((a,t)=>a+(t.ht||0),0).toFixed(2)} €</td><td class="hi">${txs.reduce((a,t)=>a+(t.tva||0),0).toFixed(2)} €</td><td>${txs.length}</td></tr>`;}).join('')}
+      <tr class="total"><td>Total annuel</td><td>${tHT.toFixed(2)} €</td><td class="hi">${tTVA.toFixed(2)} €</td><td>${transactions.length}</td></tr>
+    </tbody></table>`;
+  }else if(type==='comptes'){
+    title='Bilan des charges annuelles';
+    const cats={};transactions.forEach(t=>{if(!cats[t.category])cats[t.category]={ht:0,tva:0,n:0};cats[t.category].ht+=t.ht||0;cats[t.category].tva+=t.tva||0;cats[t.category].n++;});
+    const tHT=transactions.reduce((a,t)=>a+(t.ht||0),0),tTVA=transactions.reduce((a,t)=>a+(t.tva||0),0);
+    content=`<table><thead><tr><th>Catégorie</th><th>Factures</th><th>Charges HT</th><th>TVA récupérable</th></tr></thead><tbody>
+      ${Object.entries(cats).sort((a,b)=>b[1].ht-a[1].ht).map(([c,v])=>`<tr><td>${c}</td><td>${v.n}</td><td>${v.ht.toFixed(2)} €</td><td class="hi">${v.tva.toFixed(2)} €</td></tr>`).join('')}
+      <tr class="total"><td>Total</td><td>${transactions.length}</td><td>${tHT.toFixed(2)} €</td><td class="hi">${tTVA.toFixed(2)} €</td></tr>
+    </tbody></table>`;
+  }else{
+    title='Notes de frais';
+    const rows=getFiltered();
+    const tTTC=rows.reduce((a,t)=>a+(t.ttc||0),0),tTVA=rows.reduce((a,t)=>a+(t.tva||0),0);
+    content=`<table><thead><tr><th>Date</th><th>Fournisseur</th><th>Catégorie</th><th>Paiement</th><th>HT</th><th>TVA</th><th>TTC</th></tr></thead><tbody>
+      ${rows.map(t=>`<tr><td>${t.date}</td><td>${t.supplier||'—'}</td><td>${t.category}</td><td>${t.payment}</td><td>${(t.ht||0).toFixed(2)} €</td><td>${(t.tva||0).toFixed(2)} €</td><td><strong>${(t.ttc||0).toFixed(2)} €</strong></td></tr>`).join('')}
+      <tr class="total"><td colspan="5">Total — ${rows.length} factures</td><td>${tTVA.toFixed(2)} €</td><td>${tTTC.toFixed(2)} €</td></tr>
+    </tbody></table>`;
+  }
+  const html=`<html><head><meta charset="utf-8"><title>${title}</title><style>
+    body{font-family:Arial,sans-serif;font-size:12px;margin:30px;color:#2e3028}
+    h1{font-size:20px;font-weight:700;margin-bottom:4px;color:#4e6e4e}
+    .meta{color:#7a7d6e;font-size:12px;margin-bottom:20px}
+    table{width:100%;border-collapse:collapse}
+    th{background:#e8e4d9;padding:8px 10px;text-align:left;font-size:11px;font-weight:700;border-bottom:2px solid #dedad0;text-transform:uppercase;letter-spacing:0.3px;color:#4e6e4e}
+    td{padding:8px 10px;border-bottom:1px solid #e8e4d9}
+    .hi{color:#5e82a0;font-weight:600}
+    .total{background:#f0ece3;font-weight:700}
+    .footer{margin-top:24px;font-size:10px;color:#aaa99a;border-top:1px solid #dedad0;padding-top:10px}
+    @media print{body{margin:15px}}
+  </style></head><body>
+    <h1>${title}</h1><div class="meta">Exporté le ${date}</div>
+    ${content}
+    <div class="footer">Généré automatiquement — TVA réelle trimestrielle</div>
+    <script>window.onload=()=>window.print()<\/script>
+  </body></html>`;
+  const w=window.open('','_blank');
+  if(w){w.document.write(html);w.document.close();}
+  else showToast('Autorisez les popups pour le PDF','err');
+}
+
+function dl(name,content,type){
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob(['\uFEFF'+content],{type}));
+  a.download=name;a.click();
+}
+
+save();setState('capture',true);
+
+// ── PWA : Service Worker ──────────────────────────────────────────────
+const SW_CODE = `
+const CACHE = 'ndf-v1';
+const ASSETS = [self.location.pathname];
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
+  self.skipWaiting();
+});
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys().then(keys =>
+    Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+  ));
+  self.clients.claim();
+});
+self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') return;
+  e.respondWith(
+    fetch(e.request).then(r => {
+      const clone = r.clone();
+      caches.open(CACHE).then(c => c.put(e.request, clone));
+      return r;
+    }).catch(() => caches.match(e.request))
+  );
+});
+`;
+if ('serviceWorker' in navigator) {
+  const blob = new Blob([SW_CODE], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(() => {});
+}
+
+// ── PWA : bouton d'installation Chrome ───────────────────────────────
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Remplace la bannière générique par un vrai bouton d'install
+  const banner = document.getElementById('install-banner');
+  if (banner) {
+    banner.innerHTML = `<span style="font-size:20px">📲</span>
+      <div class="install-text">Installez l'app sur votre écran d'accueil pour l'utiliser hors ligne !</div>
+      <button onclick="installPWA()" style="background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap">Installer</button>
+      <button class="install-close" onclick="this.parentElement.style.display='none'">✕</button>`;
+    banner.style.display = 'flex';
+  }
+});
+function installPWA() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(() => {
+    deferredPrompt = null;
+    const banner = document.getElementById('install-banner');
+    if (banner) banner.style.display = 'none';
+  });
+}
+window.addEventListener('appinstalled', () => {
+  const banner = document.getElementById('install-banner');
+  if (banner) banner.style.display = 'none';
+  deferredPrompt = null;
+});
+
+</script>
+</body>
+</html>
