@@ -12,20 +12,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
+:root{
   --bg:#f0ece3;--bg2:#e8e4d9;--bg3:#dedad0;
   --border:rgba(90,100,80,0.12);--border2:rgba(90,100,80,0.22);
   --text:#2e3028;--text2:#7a7d6e;--text3:#aaa99a;
-  --accent:#6b8f6b;--accent-dim:rgba(107,143,107,0.14);
-  --accent-dark:#4e6e4e;
+  --accent:#6b8f6b;--accent-dim:rgba(107,143,107,0.14);--accent-dark:#4e6e4e;
   --blue:#5e82a0;--blue-dim:rgba(94,130,160,0.13);
-  --green:#6b8f6b;--green-dim:rgba(107,143,107,0.14);
   --red:#b05c5c;--red-dim:rgba(176,92,92,0.12);
   --amber:#a07840;--amber-dim:rgba(160,120,64,0.13);
   --radius:16px;--radius-sm:10px;
   --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
   --safe-bottom:env(safe-area-inset-bottom,0px);
-  --shadow: 0 1px 3px rgba(60,60,40,0.08);
+  --shadow:0 1px 3px rgba(60,60,40,0.08);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font);overflow:hidden}
@@ -35,7 +33,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .scroll-area{flex:1;overflow-y:auto;padding:0 16px 16px;-webkit-overflow-scrolling:touch}
 .scroll-area::-webkit-scrollbar{display:none}
 .topbar{padding:16px 16px 0;display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0}
-.topbar-title{font-size:22px;font-weight:600;letter-spacing:-0.5px;color:var(--text)}
+.topbar-title{font-size:22px;font-weight:600;letter-spacing:-0.5px}
 .topbar-sub{font-size:13px;color:var(--text2);margin-top:2px}
 .topbar-badge{background:var(--accent-dim);color:var(--accent-dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;font-family:var(--mono);margin-top:4px;border:0.5px solid rgba(107,143,107,0.25)}
 .bottom-nav{display:flex;background:var(--bg2);border-top:0.5px solid var(--border);padding-bottom:var(--safe-bottom);flex-shrink:0;box-shadow:0 -1px 0 rgba(90,100,80,0.07)}
@@ -43,9 +41,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .nav-btn.active{color:var(--accent)}
 .nav-btn svg{width:20px;height:20px}
 .nav-btn span{font-size:9px;font-weight:500}
-.solde-card{border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
-.solde-card.a-payer{background:rgba(176,92,92,0.08);border:0.5px solid rgba(176,92,92,0.3)}
-.solde-card.credit{background:rgba(107,143,107,0.08);border:0.5px solid rgba(107,143,107,0.3)}
 .card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
 .card-title{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px}
 .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
@@ -74,21 +69,21 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .pay-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
 .pay-opt{padding:14px;border-radius:var(--radius-sm);border:0.5px solid var(--border2);background:none;color:var(--text2);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;text-align:center;transition:all 0.15s}
 .pay-opt.sel-cb{background:var(--blue-dim);border-color:var(--blue);color:var(--blue)}
-.pay-opt.sel-pro{background:var(--green-dim);border-color:var(--accent);color:var(--accent-dark)}
+.pay-opt.sel-pro{background:rgba(107,143,107,0.14);border-color:var(--accent);color:var(--accent-dark)}
 .preview-wrap{position:relative;margin-bottom:16px;border-radius:var(--radius-sm);overflow:hidden;background:var(--bg3);border:0.5px solid var(--border)}
 .preview-img{width:100%;max-height:200px;object-fit:contain;display:block}
 .preview-badge{position:absolute;top:8px;right:8px;background:rgba(107,143,107,0.85);color:#fff;font-size:11px;padding:4px 8px;border-radius:20px;font-weight:600}
 .badge{display:inline-flex;align-items:center;font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;font-family:var(--mono)}
 .badge-cb{background:var(--blue-dim);color:var(--blue)}
-.badge-pro{background:var(--green-dim);color:var(--accent-dark)}
+.badge-pro{background:rgba(107,143,107,0.14);color:var(--accent-dark)}
 .tx-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:0.5px solid var(--border)}
 .tx-item:last-child{border-bottom:none}
 .tx-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:var(--bg3);border:0.5px solid var(--border)}
 .tx-body{flex:1;min-width:0}
-.tx-name{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
+.tx-name{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tx-meta{font-size:12px;color:var(--text3);margin-top:2px}
 .tx-amount{text-align:right;flex-shrink:0}
-.tx-ttc{font-size:15px;font-weight:600;font-family:var(--mono);color:var(--text)}
+.tx-ttc{font-size:15px;font-weight:600;font-family:var(--mono)}
 .tx-tva{font-size:11px;color:var(--text3);margin-top:2px;font-family:var(--mono)}
 .tx-del{background:none;border:none;color:var(--text3);cursor:pointer;padding:6px;border-radius:8px;font-size:16px}
 .tx-del:active{background:var(--red-dim);color:var(--red)}
@@ -96,25 +91,24 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .spinner{width:32px;height:32px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spinner-label{font-size:14px;color:var(--text2)}
-.toast{position:absolute;bottom:calc(72px + var(--safe-bottom) + 12px);left:16px;right:16px;padding:14px 16px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;display:none;z-index:100;animation:slideup 0.2s ease}
+.toast{position:absolute;bottom:calc(68px + var(--safe-bottom) + 12px);left:16px;right:16px;padding:14px 16px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;display:none;z-index:100;animation:slideup 0.2s ease}
 @keyframes slideup{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
-.toast-ok{background:var(--green-dim);border:0.5px solid var(--accent);color:var(--accent-dark)}
+.toast-ok{background:rgba(107,143,107,0.14);border:0.5px solid var(--accent);color:var(--accent-dark)}
 .toast-err{background:var(--red-dim);border:0.5px solid var(--red);color:var(--red)}
 .toast-info{background:var(--blue-dim);border:0.5px solid var(--blue);color:var(--blue)}
 .section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin:20px 0 10px}
 .q-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;box-shadow:var(--shadow)}
 .q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.q-name{font-size:15px;font-weight:600;color:var(--text)}
+.q-name{font-size:15px;font-weight:600}
 .q-tag{font-size:11px;background:var(--amber-dim);color:var(--amber);padding:3px 8px;border-radius:20px;font-family:var(--mono);border:0.5px solid rgba(160,120,64,0.2)}
 .q-tag.empty{background:var(--bg3);color:var(--text3);border-color:var(--border)}
 .q-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:0.5px solid var(--border)}
 .q-row:last-child{border-bottom:none}
 .q-row span:first-child{color:var(--text2)}
-.q-row span:last-child{font-family:var(--mono);font-weight:500;color:var(--text)}
-.q-row.hl span:last-child{color:var(--blue)}
+.q-row span:last-child{font-family:var(--mono);font-weight:500}
 .cat-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--border)}
 .cat-row:last-child{border-bottom:none}
-.cat-name{font-size:13px;font-weight:500;min-width:90px;color:var(--text)}
+.cat-name{font-size:13px;font-weight:500;min-width:90px}
 .cat-bar-wrap{flex:1;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden}
 .cat-bar{height:100%;background:var(--accent);border-radius:2px;transition:width 0.4s ease}
 .cat-amount{font-size:13px;font-family:var(--mono);color:var(--text2);min-width:76px;text-align:right}
@@ -126,12 +120,26 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .export-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .empty{text-align:center;padding:48px 24px}
 .empty-icon{font-size:40px;margin-bottom:12px}
-.empty-title{font-size:16px;font-weight:600;margin-bottom:6px;color:var(--text)}
+.empty-title{font-size:16px;font-weight:600;margin-bottom:6px}
 .empty-sub{font-size:13px;color:var(--text3)}
+.solde-card{border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
+.solde-card.a-payer{background:rgba(176,92,92,0.08);border:0.5px solid rgba(176,92,92,0.3)}
+.solde-card.credit{background:rgba(107,143,107,0.08);border:0.5px solid rgba(107,143,107,0.3)}
 .img-thumb{width:40px;height:40px;border-radius:12px;object-fit:cover;border:0.5px solid var(--border);cursor:pointer;flex-shrink:0}
-.img-modal{display:none;position:absolute;inset:0;background:rgba(46,48,40,0.8);z-index:300;align-items:center;justify-content:center;padding:20px}
+.img-modal{display:none;position:absolute;inset:0;background:rgba(46,48,40,0.85);z-index:300;align-items:center;justify-content:center;padding:20px}
 .img-modal img{max-width:100%;max-height:80vh;border-radius:var(--radius);object-fit:contain}
-.img-modal-close{position:absolute;top:16px;right:16px;background:var(--bg2);border:none;border-radius:50%;width:36px;height:36px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text)}
+.img-modal-close{position:absolute;top:16px;right:16px;background:var(--bg2);border:none;border-radius:50%;width:36px;height:36px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+/* Accueil */
+.home-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:14px;box-shadow:var(--shadow);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:16px}
+.home-card:active{transform:scale(0.98);background:var(--bg3)}
+.home-card-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.home-card-icon.achat{background:rgba(94,130,160,0.15);border:0.5px solid rgba(94,130,160,0.3)}
+.home-card-icon.vente{background:rgba(107,143,107,0.15);border:0.5px solid rgba(107,143,107,0.3)}
+.home-card-body{flex:1}
+.home-card-title{font-size:17px;font-weight:600;margin-bottom:3px}
+.home-card-sub{font-size:13px;color:var(--text2)}
+.home-card-arrow{color:var(--text3);font-size:20px}
+.install-banner{background:var(--accent-dim);border:0.5px solid rgba(107,143,107,0.3);border-radius:var(--radius-sm);padding:12px 14px;margin:12px 16px 0;display:flex;align-items:center;gap:10px}
 .install-text{flex:1;font-size:12px;color:var(--accent-dark);line-height:1.4}
 .install-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px}
 input[type=file]{display:none}
@@ -143,7 +151,7 @@ input[type=date]{color-scheme:light}
 
 <div class="install-banner" id="install-banner">
   <span style="font-size:20px">📲</span>
-  <div class="install-text">Ajoutez l'app à votre écran d'accueil : menu du navigateur → "Sur l'écran d'accueil"</div>
+  <div class="install-text">Ajoutez l'app à votre écran d'accueil pour l'utiliser hors ligne</div>
   <button class="install-close" onclick="this.parentElement.style.display='none'">✕</button>
 </div>
 
@@ -159,9 +167,8 @@ input[type=date]{color-scheme:light}
 <div id="apikey-modal" style="display:none;position:absolute;inset:0;background:rgba(46,48,40,0.55);z-index:200;align-items:center;justify-content:center;padding:24px">
   <div style="background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius);padding:24px;width:100%;max-width:400px;box-shadow:0 8px 32px rgba(46,48,40,0.18)">
     <div style="font-size:17px;font-weight:600;margin-bottom:6px">Clé API Anthropic</div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.5">Nécessaire pour l'analyse automatique des factures. Stockée uniquement sur cet appareil, jamais envoyée ailleurs.</div>
-    <div class="field">
-      <label>Votre clé API (commence par sk-ant-…)</label>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.5">Nécessaire pour l'analyse automatique des factures. Stockée uniquement sur cet appareil.</div>
+    <div class="field"><label>Votre clé API (commence par sk-ant-…)</label>
       <input id="apikey-input" type="password" placeholder="sk-ant-api03-…" style="font-family:var(--mono);font-size:13px">
     </div>
     <div style="display:flex;gap:8px;margin-top:4px">
@@ -174,89 +181,56 @@ input[type=date]{color-scheme:light}
   </div>
 </div>
 
-<!-- SCAN -->
-<div class="screen active" id="screen-scan">
+<!-- ═══════════════════════════════ ACCUEIL ═══════════════════════════════ -->
+<div class="screen active" id="screen-accueil">
   <div class="topbar">
-    <div><div class="topbar-title">Scanner</div><div class="topbar-sub">Ajouter une facture</div></div>
-    <div style="display:flex;align-items:flex-start;gap:8px;margin-top:4px">
-      <button onclick="openApiKeyModal()" title="Configurer la clé API" style="background:none;border:0.5px solid var(--border2);border-radius:8px;padding:5px 8px;cursor:pointer;color:var(--text2);font-size:16px;line-height:1">🔑</button>
+    <div><div class="topbar-title">Notes de Frais</div><div class="topbar-sub">Que souhaitez-vous faire ?</div></div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button onclick="openApiKeyModal()" title="Clé API" style="background:none;border:0.5px solid var(--border2);border-radius:8px;padding:5px 8px;cursor:pointer;color:var(--text2);font-size:16px;line-height:1">🔑</button>
       <div class="topbar-badge" id="tx-count-badge">0 tx</div>
     </div>
   </div>
-  <div class="scroll-area" style="padding-top:16px">
+  <div class="scroll-area" style="padding-top:20px">
 
-    <div id="state-capture">
-      <button class="btn-big btn-primary" onclick="document.getElementById('cam-input').click()">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        Prendre une photo
-      </button>
-      <input type="file" id="cam-input" accept="image/*" capture="environment" onchange="handleFile(event)">
-      <button class="btn-big btn-camera" onclick="document.getElementById('file-input').click()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        Importer PDF ou image
-      </button>
-      <input type="file" id="file-input" accept="image/*,application/pdf" onchange="handleFile(event)">
+    <div class="home-card" onclick="goNavScreen('achats', document.querySelector('[data-screen=achats]'))">
+      <div class="home-card-icon achat">🧾</div>
+      <div class="home-card-body">
+        <div class="home-card-title">Factures fournisseurs</div>
+        <div class="home-card-sub">Scanner ou importer une facture d'achat</div>
+      </div>
+      <div class="home-card-arrow">›</div>
     </div>
 
-    <div id="state-pdf" style="display:none">
-      <div class="card">
-        <div class="card-title">Fichier PDF détecté</div>
-        <div class="pdf-choice">
-          <button class="pdf-opt" onclick="choosePDF('ai')"><div class="pdf-opt-title">Analyse IA</div><div class="pdf-opt-sub">Extraction automatique</div></button>
-          <button class="pdf-opt" onclick="choosePDF('manual')"><div class="pdf-opt-title">Saisie manuelle</div><div class="pdf-opt-sub">Remplissage direct</div></button>
-        </div>
-        <button class="btn-sm da" onclick="resetScan()">Annuler</button>
+    <div class="home-card" onclick="goNavScreen('ventes', document.querySelector('[data-screen=ventes]'))">
+      <div class="home-card-icon vente">💶</div>
+      <div class="home-card-body">
+        <div class="home-card-title">Factures clients</div>
+        <div class="home-card-sub">Scanner ou importer une facture de vente</div>
       </div>
+      <div class="home-card-arrow">›</div>
     </div>
 
-    <div id="state-analyzing" style="display:none">
-      <div class="card">
-        <div class="spinner-wrap">
-          <div class="spinner"></div>
-          <div class="spinner-label" id="analyze-label">Analyse de la facture...</div>
-        </div>
-      </div>
+    <div class="section-title">Résumé</div>
+    <div class="metric-grid">
+      <div class="metric"><div class="metric-label">Achats TTC</div><div class="metric-value" id="h-achats" style="color:var(--blue)">0 €</div></div>
+      <div class="metric hi"><div class="metric-label">Ventes TTC</div><div class="metric-value" id="h-ventes">0 €</div></div>
+      <div class="metric"><div class="metric-label">TVA déductible</div><div class="metric-value" id="h-tva-ded" style="color:var(--blue)">0 €</div></div>
+      <div class="metric"><div class="metric-label">TVA collectée</div><div class="metric-value" id="h-tva-coll" style="color:var(--red)">0 €</div></div>
     </div>
 
-    <div id="state-form" style="display:none">
-      <div class="preview-wrap" id="preview-wrap">
-        <img id="preview-img" class="preview-img" src="" alt="">
-        <div class="preview-badge" id="preview-badge"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Mode de paiement</div>
-        <div class="pay-toggle">
-          <button class="pay-opt" id="btn-cb" onclick="setPay('cb')">CB personnelle</button>
-          <button class="pay-opt" id="btn-pro" onclick="setPay('pro')">Compte pro</button>
-        </div>
-        <div class="field-row">
-          <div class="field"><label>Fournisseur</label><input id="f-supplier" type="text" placeholder="Nom"></div>
-          <div class="field"><label>Date</label><input id="f-date" type="date"></div>
-        </div>
-        <div class="field-row3">
-          <div class="field"><label>HT (€)</label><input id="f-ht" type="number" step="0.01" inputmode="decimal" placeholder="0.00" oninput="calcTTC()"></div>
-          <div class="field"><label>TVA (€)</label><input id="f-tva" type="number" step="0.01" inputmode="decimal" placeholder="0.00" oninput="calcTTC()"></div>
-          <div class="field"><label>TTC (€)</label><input id="f-ttc" type="number" step="0.01" inputmode="decimal" placeholder="0.00"></div>
-        </div>
-        <div class="field-row">
-          <div class="field"><label>Catégorie</label>
-            <select id="f-cat"><option>Restauration</option><option>Transport</option><option>Hébergement</option><option>Fournitures</option><option>Télécom</option><option>Logiciels</option><option>Formation</option><option>Marketing</option><option>Autre</option></select>
-          </div>
-          <div class="field"><label>N° facture</label><input id="f-num" type="text" placeholder="FAC-001"></div>
-        </div>
-        <div class="field"><label>Description</label><input id="f-desc" type="text" placeholder="Description courte"></div>
-        <button class="btn-big btn-primary" onclick="saveTx()" style="margin-top:8px">Enregistrer</button>
-        <div style="margin-top:8px;text-align:center"><button class="btn-sm da" onclick="resetScan()">Annuler</button></div>
-      </div>
-    </div>
   </div>
 </div>
 
-<!-- TRANSACTIONS -->
-<div class="screen" id="screen-transactions">
+<!-- ═══════════════════════════════ ACHATS ════════════════════════════════ -->
+<div class="screen" id="screen-achats">
   <div class="topbar">
-    <div><div class="topbar-title">Transactions</div><div class="topbar-sub" id="tx-sub">Toutes les factures</div></div>
-    <select id="fil-q" style="background:var(--bg3);border:0.5px solid var(--border2);border-radius:var(--radius-sm);padding:6px 10px;color:var(--text);font-family:var(--font);font-size:12px;-webkit-appearance:none;margin-top:4px" onchange="renderTx()">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button onclick="goNavScreen('accueil',document.querySelector('[data-screen=accueil]'))" style="background:none;border:none;cursor:pointer;color:var(--text2);font-size:20px;padding:0;line-height:1">‹</button>
+        <div><div class="topbar-title">Achats</div><div class="topbar-sub" id="achat-sub">Factures fournisseurs</div></div>
+      </div>
+    </div>
+    <select id="fil-q" style="background:var(--bg3);border:0.5px solid var(--border2);border-radius:var(--radius-sm);padding:6px 10px;color:var(--text);font-family:var(--font);font-size:12px;-webkit-appearance:none;margin-top:4px" onchange="renderAchats()">
       <option value="">Tous</option><option value="Q1">T1</option><option value="Q2">T2</option><option value="Q3">T3</option><option value="Q4">T4</option>
     </select>
   </div>
@@ -267,21 +241,89 @@ input[type=date]{color-scheme:light}
       <div class="metric"><div class="metric-label">CB perso</div><div class="metric-value" id="m-cb">0 €</div><div class="metric-sub">à rembourser</div></div>
       <div class="metric"><div class="metric-label">Compte pro</div><div class="metric-value" id="m-pro">0 €</div></div>
     </div>
-    <div class="section-title">Factures</div>
-    <div class="card" style="padding:0 16px"><div id="tx-list"></div></div>
+
+    <!-- États scan achats -->
+    <div id="a-state-capture">
+      <button class="btn-big btn-primary" onclick="document.getElementById('a-cam-input').click()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        Prendre une photo
+      </button>
+      <input type="file" id="a-cam-input" accept="image/*" capture="environment">
+      <button class="btn-big btn-camera" onclick="document.getElementById('a-file-input').click()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Importer PDF ou image
+      </button>
+      <input type="file" id="a-file-input" accept="image/*,application/pdf">
+      <button class="btn-big btn-camera" style="margin-top:6px" onclick="aFillForm({})">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Saisie manuelle
+      </button>
+    </div>
+    <div id="a-state-pdf" style="display:none">
+      <div class="card">
+        <div class="card-title">Fichier PDF détecté</div>
+        <div class="pdf-choice">
+          <button class="pdf-opt" onclick="aChoosePDF('ai')"><div class="pdf-opt-title">Analyse IA</div><div class="pdf-opt-sub">Extraction automatique</div></button>
+          <button class="pdf-opt" onclick="aChoosePDF('manual')"><div class="pdf-opt-title">Saisie manuelle</div><div class="pdf-opt-sub">Remplissage direct</div></button>
+        </div>
+        <button class="btn-sm da" style="margin-top:8px" onclick="aReset()">Annuler</button>
+      </div>
+    </div>
+    <div id="a-state-analyzing" style="display:none">
+      <div class="card"><div class="spinner-wrap"><div class="spinner"></div><div class="spinner-label" id="a-analyze-label">Analyse en cours…</div></div></div>
+    </div>
+    <div id="a-state-form" style="display:none">
+      <div class="preview-wrap" id="a-preview-wrap" style="display:none">
+        <img id="a-preview-img" class="preview-img" src="" alt="">
+        <div class="preview-badge" id="a-preview-badge"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Mode de paiement</div>
+        <div class="pay-toggle">
+          <button class="pay-opt" id="a-btn-cb" onclick="aSetPay('cb')">CB personnelle</button>
+          <button class="pay-opt" id="a-btn-pro" onclick="aSetPay('pro')">Compte pro</button>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Fournisseur</label><input id="a-supplier" type="text" placeholder="Nom"></div>
+          <div class="field"><label>Date</label><input id="a-date" type="date"></div>
+        </div>
+        <div class="field-row3">
+          <div class="field"><label>HT (€)</label><input id="a-ht" type="number" step="0.01" inputmode="decimal" placeholder="0.00" oninput="aCalcTTC()"></div>
+          <div class="field"><label>TVA (€)</label><input id="a-tva" type="number" step="0.01" inputmode="decimal" placeholder="0.00" oninput="aCalcTTC()"></div>
+          <div class="field"><label>TTC (€)</label><input id="a-ttc" type="number" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Catégorie</label>
+            <select id="a-cat"><option>Restauration</option><option>Transport</option><option>Hébergement</option><option>Fournitures</option><option>Télécom</option><option>Logiciels</option><option>Formation</option><option>Marketing</option><option>Autre</option></select>
+          </div>
+          <div class="field"><label>N° facture</label><input id="a-num" type="text" placeholder="FAC-001"></div>
+        </div>
+        <div class="field"><label>Description</label><input id="a-desc" type="text" placeholder="Description courte"></div>
+        <button class="btn-big btn-primary" onclick="aSave()" style="margin-top:8px">Enregistrer</button>
+        <div style="margin-top:8px;text-align:center"><button class="btn-sm da" onclick="aReset()">Annuler</button></div>
+      </div>
+    </div>
+
+    <div class="section-title">Factures fournisseurs</div>
+    <div class="card" style="padding:0 16px"><div id="achat-list"></div></div>
     <div class="section-title">Exporter</div>
     <div class="export-row">
-      <button class="btn-sm" onclick="dlCSV()">CSV</button>
+      <button class="btn-sm" onclick="dlCSV('achats')">CSV</button>
       <button class="btn-sm" onclick="dlXLS()">Excel</button>
-      <button class="btn-sm ac" onclick="dlPDF('transactions')">PDF</button>
+      <button class="btn-sm ac" onclick="dlPDF('achats')">PDF</button>
     </div>
   </div>
 </div>
 
-<!-- VENTES -->
+<!-- ═══════════════════════════════ VENTES ════════════════════════════════ -->
 <div class="screen" id="screen-ventes">
   <div class="topbar">
-    <div><div class="topbar-title">Ventes</div><div class="topbar-sub" id="vente-sub">Factures clients</div></div>
+    <div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button onclick="goNavScreen('accueil',document.querySelector('[data-screen=accueil]'))" style="background:none;border:none;cursor:pointer;color:var(--text2);font-size:20px;padding:0;line-height:1">‹</button>
+        <div><div class="topbar-title">Ventes</div><div class="topbar-sub" id="vente-sub">Factures clients</div></div>
+      </div>
+    </div>
     <select id="fil-vq" style="background:var(--bg3);border:0.5px solid var(--border2);border-radius:var(--radius-sm);padding:6px 10px;color:var(--text);font-family:var(--font);font-size:12px;-webkit-appearance:none;margin-top:4px" onchange="renderVentes()">
       <option value="">Tous</option><option value="Q1">T1</option><option value="Q2">T2</option><option value="Q3">T3</option><option value="Q4">T4</option>
     </select>
@@ -291,45 +333,38 @@ input[type=date]{color-scheme:light}
       <div class="metric hi"><div class="metric-label">CA TTC</div><div class="metric-value" id="vm-ttc">0 €</div></div>
       <div class="metric"><div class="metric-label">TVA collectée</div><div class="metric-value" id="vm-tva" style="color:var(--red)">0 €</div></div>
     </div>
-    <div id="vente-state-capture">
+
+    <!-- États scan ventes -->
+    <div id="v-state-capture">
       <button class="btn-big btn-primary" onclick="document.getElementById('v-cam-input').click()">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
         Prendre une photo
       </button>
-      <input type="file" id="v-cam-input" accept="image/*" capture="environment" onchange="handleVenteFile(event)">
+      <input type="file" id="v-cam-input" accept="image/*" capture="environment">
       <button class="btn-big btn-camera" onclick="document.getElementById('v-file-input').click()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         Importer PDF ou image
       </button>
-      <input type="file" id="v-file-input" accept="image/*,application/pdf" onchange="handleVenteFile(event)">
-      <button class="btn-big btn-camera" style="margin-top:6px" onclick="openVenteForm()">
+      <input type="file" id="v-file-input" accept="image/*,application/pdf">
+      <button class="btn-big btn-camera" style="margin-top:6px" onclick="vFillForm({})">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Saisie manuelle
       </button>
     </div>
-
-    <div id="vente-state-pdf" style="display:none">
+    <div id="v-state-pdf" style="display:none">
       <div class="card">
         <div class="card-title">Fichier PDF détecté</div>
         <div class="pdf-choice">
-          <button class="pdf-opt" onclick="chooseVentePDF('ai')"><div class="pdf-opt-title">Analyse IA</div><div class="pdf-opt-sub">Extraction automatique</div></button>
-          <button class="pdf-opt" onclick="chooseVentePDF('manual')"><div class="pdf-opt-title">Saisie manuelle</div><div class="pdf-opt-sub">Remplissage direct</div></button>
+          <button class="pdf-opt" onclick="vChoosePDF('ai')"><div class="pdf-opt-title">Analyse IA</div><div class="pdf-opt-sub">Extraction automatique</div></button>
+          <button class="pdf-opt" onclick="vChoosePDF('manual')"><div class="pdf-opt-title">Saisie manuelle</div><div class="pdf-opt-sub">Remplissage direct</div></button>
         </div>
-        <button class="btn-sm da" onclick="resetVente()">Annuler</button>
+        <button class="btn-sm da" style="margin-top:8px" onclick="vReset()">Annuler</button>
       </div>
     </div>
-
-    <div id="vente-state-analyzing" style="display:none">
-      <div class="card">
-        <div class="spinner-wrap">
-          <div class="spinner"></div>
-          <div class="spinner-label" id="v-analyze-label">Analyse de la facture...</div>
-        </div>
-      </div>
+    <div id="v-state-analyzing" style="display:none">
+      <div class="card"><div class="spinner-wrap"><div class="spinner"></div><div class="spinner-label" id="v-analyze-label">Analyse en cours…</div></div></div>
     </div>
-
-    <!-- Formulaire vente (masqué par défaut) -->
-    <div id="vente-form" style="display:none">
+    <div id="v-state-form" style="display:none">
       <div class="preview-wrap" id="v-preview-wrap" style="display:none">
         <img id="v-preview-img" class="preview-img" src="" alt="">
         <div class="preview-badge" id="v-preview-badge"></div>
@@ -341,24 +376,21 @@ input[type=date]{color-scheme:light}
           <div class="field"><label>Date</label><input id="v-date" type="date"></div>
         </div>
         <div class="field-row3">
-          <div class="field"><label>HT (€)</label><input id="v-ht" type="number" step="0.01" inputmode="decimal" placeholder="0.00" oninput="calcVenteTTC()"></div>
-          <div class="field"><label>TVA (€)</label><input id="v-tva" type="number" step="0.01" inputmode="decimal" placeholder="0.00" oninput="calcVenteTTC()"></div>
+          <div class="field"><label>HT (€)</label><input id="v-ht" type="number" step="0.01" inputmode="decimal" placeholder="0.00" oninput="vCalcTTC()"></div>
+          <div class="field"><label>TVA (€)</label><input id="v-tva" type="number" step="0.01" inputmode="decimal" placeholder="0.00" oninput="vCalcTTC()"></div>
           <div class="field"><label>TTC (€)</label><input id="v-ttc" type="number" step="0.01" inputmode="decimal" placeholder="0.00"></div>
         </div>
         <div class="field-row">
           <div class="field"><label>N° facture</label><input id="v-num" type="text" placeholder="FAC-001"></div>
           <div class="field"><label>Taux TVA</label>
-            <select id="v-taux" onchange="calcVenteTVA()">
-              <option value="0.20">20 %</option>
-              <option value="0.10">10 %</option>
-              <option value="0.055">5,5 %</option>
-              <option value="0">0 %</option>
+            <select id="v-taux" onchange="vCalcTVA()">
+              <option value="0.20">20 %</option><option value="0.10">10 %</option><option value="0.055">5,5 %</option><option value="0">0 %</option>
             </select>
           </div>
         </div>
         <div class="field"><label>Description</label><input id="v-desc" type="text" placeholder="Prestation, produit…"></div>
-        <button class="btn-big btn-primary" onclick="saveVente()" style="margin-top:8px">Enregistrer</button>
-        <div style="margin-top:8px;text-align:center"><button class="btn-sm da" onclick="resetVente()">Annuler</button></div>
+        <button class="btn-big btn-primary" onclick="vSave()" style="margin-top:8px">Enregistrer</button>
+        <div style="margin-top:8px;text-align:center"><button class="btn-sm da" onclick="vReset()">Annuler</button></div>
       </div>
     </div>
 
@@ -372,7 +404,7 @@ input[type=date]{color-scheme:light}
   </div>
 </div>
 
-<!-- TVA -->
+<!-- ═══════════════════════════════ TVA ══════════════════════════════════ -->
 <div class="screen" id="screen-tva">
   <div class="topbar"><div><div class="topbar-title">Déclaration TVA</div><div class="topbar-sub">Régime trimestriel réel</div></div></div>
   <div class="scroll-area" style="padding-top:12px">
@@ -385,7 +417,7 @@ input[type=date]{color-scheme:light}
   </div>
 </div>
 
-<!-- COMPTES -->
+<!-- ═══════════════════════════════ COMPTES ══════════════════════════════ -->
 <div class="screen" id="screen-comptes">
   <div class="topbar"><div><div class="topbar-title">Comptes annuels</div><div class="topbar-sub">Charges par catégorie</div></div></div>
   <div class="scroll-area" style="padding-top:12px">
@@ -399,279 +431,256 @@ input[type=date]{color-scheme:light}
 </div>
 
 <nav class="bottom-nav">
-  <button class="nav-btn active" onclick="goScreen('scan',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-    <span>Scanner</span>
+  <button class="nav-btn active" data-screen="accueil" onclick="goNavScreen('accueil',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Accueil</span>
   </button>
-  <button class="nav-btn" onclick="goScreen('transactions',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+  <button class="nav-btn" data-screen="achats" onclick="goNavScreen('achats',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
     <span>Achats</span>
   </button>
-  <button class="nav-btn" onclick="goScreen('ventes',this)">
+  <button class="nav-btn" data-screen="ventes" onclick="goNavScreen('ventes',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
     <span>Ventes</span>
   </button>
-  <button class="nav-btn" onclick="goScreen('tva',this)">
+  <button class="nav-btn" data-screen="tva" onclick="goNavScreen('tva',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
     <span>TVA</span>
   </button>
-  <button class="nav-btn" onclick="goScreen('comptes',this)">
+  <button class="nav-btn" data-screen="comptes" onclick="goNavScreen('comptes',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
     <span>Comptes</span>
   </button>
 </nav>
-
 </div>
 
 <script>
-const SK='ndf_v2';
-const SK_API='ndf_apikey';
-let transactions=JSON.parse(localStorage.getItem(SK)||'[]');
-let currentPay='',currentB64='',currentMime='';
+// ── Données ───────────────────────────────────────────────────────────
+const SK='ndf_v2', SK_API='ndf_apikey', SK_VENTES='ndf_ventes';
+let transactions = JSON.parse(localStorage.getItem(SK)||'[]');
+let ventes       = JSON.parse(localStorage.getItem(SK_VENTES)||'[]');
 const icons={Restauration:'🍽️',Transport:'🚗',Hébergement:'🏨',Fournitures:'📦',Télécom:'📡',Logiciels:'💻',Formation:'📚',Marketing:'📣',Autre:'📎'};
-const SK_VENTES='ndf_ventes';
-let ventes=JSON.parse(localStorage.getItem(SK_VENTES)||'[]');
 
-function getApiKey(){return localStorage.getItem(SK_API)||'';}
-function saveApiKey(){
-  const v=document.getElementById('apikey-input').value.trim();
-  if(!v.startsWith('sk-ant-')){showToast('Clé invalide — doit commencer par sk-ant-','err');return;}
-  localStorage.setItem(SK_API,v);
-  closeApiKeyModal();
-  showToast('Clé API enregistrée ✓');
-}
-function openApiKeyModal(){
-  const m=document.getElementById('apikey-modal');
-  m.style.display='flex';
-  const existing=getApiKey();
-  document.getElementById('apikey-input').value=existing?'••••••••••••••••••••':'';
-  document.getElementById('apikey-input').placeholder=existing?'(clé enregistrée — remplacer si besoin)':'sk-ant-api03-…';
-}
-function closeApiKeyModal(){document.getElementById('apikey-modal').style.display='none';}
-
+// ── Utilitaires ───────────────────────────────────────────────────────
+function fmt(n){return parseFloat(n||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
+function getQ(d){const m=new Date(d).getMonth()+1;return m<=3?'Q1':m<=6?'Q2':m<=9?'Q3':'Q4';}
 function save(){
   localStorage.setItem(SK,JSON.stringify(transactions));
   localStorage.setItem(SK_VENTES,JSON.stringify(ventes));
-  document.getElementById('tx-count-badge').textContent=transactions.length+' tx';
+  document.getElementById('tx-count-badge').textContent=(transactions.length+ventes.length)+' tx';
 }
-function fmt(n){return parseFloat(n||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
-function getQ(d){const m=new Date(d).getMonth()+1;return m<=3?'Q1':m<=6?'Q2':m<=9?'Q3':'Q4';}
-
 function showToast(msg,type='ok'){
   const t=document.getElementById('toast');
   t.textContent=msg;t.className='toast toast-'+type;t.style.display='block';
   setTimeout(()=>t.style.display='none',2800);
 }
+function openImgModal(key){const src=localStorage.getItem(key);if(!src)return;document.getElementById('img-modal-src').src=src;document.getElementById('img-modal').style.display='flex';}
+function closeImgModal(){document.getElementById('img-modal').style.display='none';document.getElementById('img-modal-src').src='';}
 
-function goScreen(name,el){
+// ── Navigation ────────────────────────────────────────────────────────
+function goNavScreen(name, el){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
-  el.classList.add('active');
-  if(name==='transactions')renderTx();
-  if(name==='ventes')renderVentes();
-  if(name==='tva')renderTVA();
-  if(name==='comptes')renderComptes();
+  // Active le bon bouton nav (el peut être un nav-btn ou un home-card)
+  const navBtn = document.querySelector('.nav-btn[data-screen='+name+']');
+  if(navBtn) navBtn.classList.add('active');
+  if(name==='accueil') renderAccueil();
+  if(name==='achats')  renderAchats();
+  if(name==='ventes')  renderVentes();
+  if(name==='tva')     renderTVA();
+  if(name==='comptes') renderComptes();
 }
 
-function setState(name,show){
+// ── Clé API ───────────────────────────────────────────────────────────
+function getApiKey(){return localStorage.getItem(SK_API)||'';}
+function saveApiKey(){
+  const v=document.getElementById('apikey-input').value.trim();
+  if(!v.startsWith('sk-ant-')){showToast('Clé invalide','err');return;}
+  localStorage.setItem(SK_API,v);closeApiKeyModal();showToast('Clé API enregistrée ✓');
+}
+function openApiKeyModal(){
+  document.getElementById('apikey-modal').style.display='flex';
+  const ex=getApiKey();
+  document.getElementById('apikey-input').value=ex?'••••••••••••••••••••':'';
+  document.getElementById('apikey-input').placeholder=ex?'(clé enregistrée — remplacer si besoin)':'sk-ant-api03-…';
+}
+function closeApiKeyModal(){document.getElementById('apikey-modal').style.display='none';}
+
+// ── Helper rebind file input ──────────────────────────────────────────
+function _rebind(id, handler){
+  const old=document.getElementById(id); if(!old)return;
+  const n=document.createElement('input');
+  n.type='file'; n.id=id; n.accept=old.accept; n.style.display='none';
+  if(old.hasAttribute('capture')) n.setAttribute('capture',old.getAttribute('capture'));
+  n.addEventListener('change',handler);
+  old.parentNode.replaceChild(n,old);
+}
+
+// ── États génériques ──────────────────────────────────────────────────
+function setS(prefix,name){
   ['capture','pdf','analyzing','form'].forEach(s=>{
-    document.getElementById('state-'+s).style.display=(s===name&&show)?'block':'none';
+    const el=document.getElementById(prefix+'-state-'+s);
+    if(el) el.style.display=(s===name?'block':'none');
   });
 }
 
-function handleFile(e){
-  const file=e.target.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    currentB64=ev.target.result;currentMime=file.type;
-    setState('capture',false);
-    if(file.type==='application/pdf'){setState('pdf',true);}
-    else{setState('analyzing',true);document.getElementById('analyze-label').textContent="L'IA analyse votre facture...";extractAI();}
+// ══════════════════════════════════════════════════════════════════════
+// ACHATS
+// ══════════════════════════════════════════════════════════════════════
+let aB64='', aMime='', aPay='';
+
+function aSetS(name){setS('a',name);}
+
+function aHandleFile(e){
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    aB64=ev.target.result; aMime=f.type;
+    aSetS('');
+    if(f.type==='application/pdf') aSetS('pdf');
+    else{aSetS('analyzing');document.getElementById('a-analyze-label').textContent="L'IA analyse votre facture…";aExtractAI();}
   };
-  reader.readAsDataURL(file);
+  r.readAsDataURL(f);
 }
-
-function choosePDF(mode){
-  setState('pdf',false);
-  if(mode==='manual'){fillForm({});}
-  else{setState('analyzing',true);document.getElementById('analyze-label').textContent="Extraction du PDF...";extractAI();}
+function aChoosePDF(mode){
+  aSetS('');
+  if(mode==='manual') aFillForm({});
+  else{aSetS('analyzing');document.getElementById('a-analyze-label').textContent="Extraction du PDF…";aExtractAI();}
 }
-
-async function extractAI(){
-  const apiKey=getApiKey();
-  if(!apiKey){
-    setState('analyzing',false);
-    openApiKeyModal();
-    showToast('Entrez votre clé API pour l\'analyse IA','err');
-    fillForm({});
-    return;
-  }
-  const isImg=currentMime.startsWith('image/');
-  const prompt=`Analyse cette facture. Retourne UNIQUEMENT du JSON valide (sans markdown) avec: {"supplier":"","date":"YYYY-MM-DD","ht":0,"tva":0,"ttc":0,"invoice_number":"","category":"parmi Restauration Transport Hébergement Fournitures Télécom Logiciels Formation Marketing Autre","description":""}`;
-  let content=isImg?
-    [{type:'image',source:{type:'base64',media_type:currentMime,data:currentB64.split(',')[1]}},{type:'text',text:prompt}]:
-    [{type:'document',source:{type:'base64',media_type:'application/pdf',data:currentB64.split(',')[1]}},{type:'text',text:prompt}];
+async function aExtractAI(){
+  const key=getApiKey();
+  if(!key){aSetS('');openApiKeyModal();showToast('Clé API requise','err');aFillForm({});return;}
+  const isImg=aMime.startsWith('image/');
+  const prompt=`Analyse cette facture fournisseur. Retourne UNIQUEMENT du JSON valide (sans markdown): {"supplier":"","date":"YYYY-MM-DD","ht":0,"tva":0,"ttc":0,"invoice_number":"","category":"parmi Restauration Transport Hébergement Fournitures Télécom Logiciels Formation Marketing Autre","description":""}`;
+  const content=isImg?
+    [{type:'image',source:{type:'base64',media_type:aMime,data:aB64.split(',')[1]}},{type:'text',text:prompt}]:
+    [{type:'document',source:{type:'base64',media_type:'application/pdf',data:aB64.split(',')[1]}},{type:'text',text:prompt}];
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content}]})});
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content}]})});
     const d=await r.json();
-    if(d.error){fillForm({});showToast('Erreur API : '+d.error.message,'err');return;}
-    const txt=(d.content||[]).map(c=>c.text||'').join('');
-    let ex={};try{ex=JSON.parse(txt.replace(/```json|```/g,'').trim());}catch(e){}
-    fillForm(ex);
-    if(ex.supplier)showToast('Extraction IA réussie ✓','info');
-  }catch(e){fillForm({});showToast('Saisie manuelle requise','err');}
+    if(d.error){aFillForm({});showToast('Erreur API : '+d.error.message,'err');return;}
+    let ex={};try{ex=JSON.parse((d.content||[]).map(c=>c.text||'').join('').replace(/```json|```/g,'').trim());}catch(e){}
+    aFillForm(ex);
+    if(ex.supplier) showToast('Extraction IA réussie ✓','info');
+  }catch(e){aFillForm({});showToast('Saisie manuelle requise','err');}
 }
-
-function fillForm(d){
-  setState('analyzing',false);setState('form',true);
-  const pw=document.getElementById('preview-wrap'),pi=document.getElementById('preview-img');
-  if(currentMime.startsWith('image/')){pi.src=currentB64;pw.style.display='block';document.getElementById('preview-badge').textContent=d.supplier?'IA ✓':'';}
+function aFillForm(d){
+  aSetS('form');
+  const pw=document.getElementById('a-preview-wrap'),pi=document.getElementById('a-preview-img');
+  if(aMime&&aMime.startsWith('image/')){pi.src=aB64;pw.style.display='block';document.getElementById('a-preview-badge').textContent=d.supplier?'IA ✓':'';}
   else{pw.style.display='none';}
-  document.getElementById('f-supplier').value=d.supplier||'';
-  document.getElementById('f-date').value=d.date||new Date().toISOString().slice(0,10);
-  document.getElementById('f-ht').value=d.ht!=null?parseFloat(d.ht).toFixed(2):'';
-  document.getElementById('f-tva').value=d.tva!=null?parseFloat(d.tva).toFixed(2):'';
-  document.getElementById('f-ttc').value=d.ttc!=null?parseFloat(d.ttc).toFixed(2):'';
-  document.getElementById('f-num').value=d.invoice_number||'';
-  document.getElementById('f-desc').value=d.description||'';
+  document.getElementById('a-supplier').value=d.supplier||'';
+  document.getElementById('a-date').value=d.date||new Date().toISOString().slice(0,10);
+  document.getElementById('a-ht').value=d.ht!=null?parseFloat(d.ht).toFixed(2):'';
+  document.getElementById('a-tva').value=d.tva!=null?parseFloat(d.tva).toFixed(2):'';
+  document.getElementById('a-ttc').value=d.ttc!=null?parseFloat(d.ttc).toFixed(2):'';
+  document.getElementById('a-num').value=d.invoice_number||'';
+  document.getElementById('a-desc').value=d.description||'';
   const cats=['Restauration','Transport','Hébergement','Fournitures','Télécom','Logiciels','Formation','Marketing','Autre'];
-  if(d.category&&cats.includes(d.category))document.getElementById('f-cat').value=d.category;
-  currentPay='';
-  document.getElementById('btn-cb').className='pay-opt';
-  document.getElementById('btn-pro').className='pay-opt';
+  if(d.category&&cats.includes(d.category)) document.getElementById('a-cat').value=d.category;
+  aPay='';
+  document.getElementById('a-btn-cb').className='pay-opt';
+  document.getElementById('a-btn-pro').className='pay-opt';
 }
-
-function setPay(v){
-  currentPay=v;
-  document.getElementById('btn-cb').className='pay-opt'+(v==='cb'?' sel-cb':'');
-  document.getElementById('btn-pro').className='pay-opt'+(v==='pro'?' sel-pro':'');
+function aSetPay(v){
+  aPay=v;
+  document.getElementById('a-btn-cb').className='pay-opt'+(v==='cb'?' sel-cb':'');
+  document.getElementById('a-btn-pro').className='pay-opt'+(v==='pro'?' sel-pro':'');
 }
-
-function calcTTC(){
-  const ht=parseFloat(document.getElementById('f-ht').value)||0;
-  const tva=parseFloat(document.getElementById('f-tva').value)||0;
-  if(ht&&tva)document.getElementById('f-ttc').value=(ht+tva).toFixed(2);
+function aCalcTTC(){
+  const ht=parseFloat(document.getElementById('a-ht').value)||0;
+  const tva=parseFloat(document.getElementById('a-tva').value)||0;
+  if(ht&&tva) document.getElementById('a-ttc').value=(ht+tva).toFixed(2);
 }
-
-function saveTx(){
-  if(!currentPay){showToast('Sélectionnez un mode de paiement','err');return;}
-  const ttc=parseFloat(document.getElementById('f-ttc').value)||0;
-  const date=document.getElementById('f-date').value;
+function aSave(){
+  if(!aPay){showToast('Sélectionnez un mode de paiement','err');return;}
+  const ttc=parseFloat(document.getElementById('a-ttc').value)||0;
+  const date=document.getElementById('a-date').value;
   if(!date||!ttc){showToast('Date et TTC obligatoires','err');return;}
-  const ht=parseFloat(document.getElementById('f-ht').value)||0;
-  const tva=parseFloat(document.getElementById('f-tva').value)||0;
+  const ht=parseFloat(document.getElementById('a-ht').value)||0;
+  const tva=parseFloat(document.getElementById('a-tva').value)||0;
   const tvaRate=ht>0?Math.round(tva/ht*1000)/10:0;
   const id=Date.now();
-  transactions.push({id,supplier:document.getElementById('f-supplier').value,date,quarter:getQ(date),ht,tva,tvaRate,ttc,invoice_number:document.getElementById('f-num').value,category:document.getElementById('f-cat').value,description:document.getElementById('f-desc').value,payment:currentPay==='cb'?'CB perso':'Compte pro',hasImg:currentMime.startsWith('image/')&&!!currentB64});
-  if(currentMime.startsWith('image/')&&currentB64){
-    try{localStorage.setItem('ndf_img_'+id,currentB64);}catch(e){}
-  }
-  save();resetScan();showToast('Facture enregistrée ✓');
+  transactions.push({id,supplier:document.getElementById('a-supplier').value,date,quarter:getQ(date),ht,tva,tvaRate,ttc,invoice_number:document.getElementById('a-num').value,category:document.getElementById('a-cat').value,description:document.getElementById('a-desc').value,payment:aPay==='cb'?'CB perso':'Compte pro',hasImg:aMime.startsWith('image/')&&!!aB64});
+  if(aMime.startsWith('image/')&&aB64){try{localStorage.setItem('ndf_img_'+id,aB64);}catch(e){}}
+  save();aReset();renderAchats();showToast('Facture enregistrée ✓');
 }
-
-function resetScan(){
-  setState('capture',true);setState('pdf',false);setState('analyzing',false);setState('form',false);
-  // Recréer les inputs file pour forcer le reset sur iOS/Android
-  ['cam-input','file-input'].forEach(id=>{
-    const old=document.getElementById(id);
-    const neu=old.cloneNode(true);
-    old.parentNode.replaceChild(neu,old);
-  });
-  currentPay='';currentB64='';currentMime='';
+function aReset(){
+  aSetS('capture'); aB64=''; aMime=''; aPay='';
+  _rebind('a-cam-input',aHandleFile);
+  _rebind('a-file-input',aHandleFile);
 }
-
-function getFiltered(){
+function getFilteredAchats(){
   const q=document.getElementById('fil-q').value;
   return transactions.filter(t=>!q||t.quarter===q).sort((a,b)=>b.date.localeCompare(a.date));
 }
-
-function renderTx(){
-  const rows=getFiltered();
+function renderAchats(){
+  const rows=getFilteredAchats();
   document.getElementById('m-ttc').textContent=fmt(rows.reduce((a,t)=>a+(t.ttc||0),0));
   document.getElementById('m-tva').textContent=fmt(rows.reduce((a,t)=>a+(t.tva||0),0));
   document.getElementById('m-cb').textContent=fmt(rows.filter(t=>t.payment==='CB perso').reduce((a,t)=>a+(t.ttc||0),0));
   document.getElementById('m-pro').textContent=fmt(rows.filter(t=>t.payment==='Compte pro').reduce((a,t)=>a+(t.ttc||0),0));
-  document.getElementById('tx-sub').textContent=rows.length+' facture'+(rows.length!==1?'s':'');
-  const list=document.getElementById('tx-list');
+  document.getElementById('achat-sub').textContent=rows.length+' facture'+(rows.length!==1?'s':'');
+  const list=document.getElementById('achat-list');
   if(!rows.length){list.innerHTML=`<div class="empty" style="padding:32px 0"><div class="empty-icon">🧾</div><div class="empty-title">Aucune facture</div><div class="empty-sub">Scannez votre première facture</div></div>`;return;}
   list.innerHTML=rows.map(t=>{
     const tvaStr=fmt(t.tva)+(t.tvaRate?` · ${t.tvaRate}%`:'');
     const img=t.hasImg?localStorage.getItem('ndf_img_'+t.id):null;
-    const iconCell=img?`<img class="img-thumb" src="${img}" onclick="openImgModal('ndf_img_${t.id}')" alt="">`:`<div class="tx-icon">${icons[t.category]||'📎'}</div>`;
-    return `<div class="tx-item">
-      ${iconCell}
+    const icon=img?`<img class="img-thumb" src="${img}" onclick="openImgModal('ndf_img_${t.id}')" alt="">`:`<div class="tx-icon">${icons[t.category]||'📎'}</div>`;
+    return `<div class="tx-item">${icon}
       <div class="tx-body"><div class="tx-name">${t.supplier||'—'}</div><div class="tx-meta">${t.date} · <span class="badge badge-${t.payment==='CB perso'?'cb':'pro'}">${t.payment}</span></div></div>
       <div class="tx-amount"><div class="tx-ttc">${fmt(t.ttc)}</div><div class="tx-tva">TVA ${tvaStr}</div></div>
-      <button class="tx-del" onclick="delTx(${t.id})">✕</button>
+      <button class="tx-del" onclick="aDelTx(${t.id})">✕</button>
     </div>`;
   }).join('');
 }
+function aDelTx(id){if(!confirm('Supprimer ?'))return;transactions=transactions.filter(t=>t.id!==id);try{localStorage.removeItem('ndf_img_'+id);}catch(e){}save();renderAchats();renderAccueil();showToast('Supprimé');}
 
-function openImgModal(key){
-  const src=localStorage.getItem(key);
-  if(!src)return;
-  const m=document.getElementById('img-modal');
-  document.getElementById('img-modal-src').src=src;
-  m.style.display='flex';
-}
-function closeImgModal(){
-  document.getElementById('img-modal').style.display='none';
-  document.getElementById('img-modal-src').src='';
-}
+// ══════════════════════════════════════════════════════════════════════
+// VENTES
+// ══════════════════════════════════════════════════════════════════════
+let vB64='', vMime='';
 
-function delTx(id){if(!confirm('Supprimer ?'))return;transactions=transactions.filter(t=>t.id!==id);try{localStorage.removeItem('ndf_img_'+id);}catch(e){}save();renderTx();showToast('Supprimé');}
+function vSetS(name){setS('v',name);}
 
-// ── VENTES ────────────────────────────────────────────────────────────
-let currentVenteB64='',currentVenteMime='';
-
-function setVenteState(name,show){
-  ['capture','pdf','analyzing','form'].forEach(s=>{
-    document.getElementById('vente-state-'+s).style.display=(s===name&&show)?'block':'none';
-  });
-}
-
-function handleVenteFile(e){
-  const file=e.target.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    currentVenteB64=ev.target.result;currentVenteMime=file.type;
-    setVenteState('capture',false);
-    if(file.type==='application/pdf'){setVenteState('pdf',true);}
-    else{setVenteState('analyzing',true);document.getElementById('v-analyze-label').textContent="L'IA analyse votre facture...";extractVenteAI();}
+function vHandleFile(e){
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    vB64=ev.target.result; vMime=f.type;
+    vSetS('');
+    if(f.type==='application/pdf') vSetS('pdf');
+    else{vSetS('analyzing');document.getElementById('v-analyze-label').textContent="L'IA analyse votre facture…";vExtractAI();}
   };
-  reader.readAsDataURL(file);
+  r.readAsDataURL(f);
 }
-
-function chooseVentePDF(mode){
-  setVenteState('pdf',false);
-  if(mode==='manual'){fillVenteForm({});}
-  else{setVenteState('analyzing',true);document.getElementById('v-analyze-label').textContent="Extraction du PDF...";extractVenteAI();}
+function vChoosePDF(mode){
+  vSetS('');
+  if(mode==='manual') vFillForm({});
+  else{vSetS('analyzing');document.getElementById('v-analyze-label').textContent="Extraction du PDF…";vExtractAI();}
 }
-
-async function extractVenteAI(){
-  const apiKey=getApiKey();
-  if(!apiKey){setVenteState('analyzing',false);openApiKeyModal();showToast('Entrez votre clé API pour l\'analyse IA','err');fillVenteForm({});return;}
-  const isImg=currentVenteMime.startsWith('image/');
-  const prompt=`Analyse cette facture client (vente). Retourne UNIQUEMENT du JSON valide (sans markdown) avec: {"client":"","date":"YYYY-MM-DD","ht":0,"tva":0,"ttc":0,"invoice_number":"","description":""}`;
-  let content=isImg?
-    [{type:'image',source:{type:'base64',media_type:currentVenteMime,data:currentVenteB64.split(',')[1]}},{type:'text',text:prompt}]:
-    [{type:'document',source:{type:'base64',media_type:'application/pdf',data:currentVenteB64.split(',')[1]}},{type:'text',text:prompt}];
+async function vExtractAI(){
+  const key=getApiKey();
+  if(!key){vSetS('');openApiKeyModal();showToast('Clé API requise','err');vFillForm({});return;}
+  const isImg=vMime.startsWith('image/');
+  const prompt=`Analyse cette facture client (vente). Retourne UNIQUEMENT du JSON valide (sans markdown): {"client":"","date":"YYYY-MM-DD","ht":0,"tva":0,"ttc":0,"invoice_number":"","description":""}`;
+  const content=isImg?
+    [{type:'image',source:{type:'base64',media_type:vMime,data:vB64.split(',')[1]}},{type:'text',text:prompt}]:
+    [{type:'document',source:{type:'base64',media_type:'application/pdf',data:vB64.split(',')[1]}},{type:'text',text:prompt}];
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content}]})});
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content}]})});
     const d=await r.json();
-    if(d.error){fillVenteForm({});showToast('Erreur API : '+d.error.message,'err');return;}
-    const txt=(d.content||[]).map(c=>c.text||'').join('');
-    let ex={};try{ex=JSON.parse(txt.replace(/```json|```/g,'').trim());}catch(e){}
-    fillVenteForm(ex);
-    if(ex.client)showToast('Extraction IA réussie ✓','info');
-  }catch(e){fillVenteForm({});showToast('Saisie manuelle requise','err');}
+    if(d.error){vFillForm({});showToast('Erreur API : '+d.error.message,'err');return;}
+    let ex={};try{ex=JSON.parse((d.content||[]).map(c=>c.text||'').join('').replace(/```json|```/g,'').trim());}catch(e){}
+    vFillForm(ex);
+    if(ex.client) showToast('Extraction IA réussie ✓','info');
+  }catch(e){vFillForm({});showToast('Saisie manuelle requise','err');}
 }
-
-function fillVenteForm(d){
-  setVenteState('analyzing',false);setVenteState('form',true);
+function vFillForm(d){
+  vSetS('form');
   const pw=document.getElementById('v-preview-wrap'),pi=document.getElementById('v-preview-img');
-  if(currentVenteMime&&currentVenteMime.startsWith('image/')){pi.src=currentVenteB64;pw.style.display='block';document.getElementById('v-preview-badge').textContent=d.client?'IA ✓':'';}
+  if(vMime&&vMime.startsWith('image/')){pi.src=vB64;pw.style.display='block';document.getElementById('v-preview-badge').textContent=d.client?'IA ✓':'';}
   else{pw.style.display='none';}
   document.getElementById('v-client').value=d.client||'';
   document.getElementById('v-date').value=d.date||new Date().toISOString().slice(0,10);
@@ -681,36 +690,17 @@ function fillVenteForm(d){
   document.getElementById('v-num').value=d.invoice_number||'';
   document.getElementById('v-desc').value=d.description||'';
 }
-
-function openVenteForm(){
-  currentVenteB64='';currentVenteMime='';
-  fillVenteForm({});
-}
-
-function resetVente(){
-  setVenteState('capture',true);setVenteState('pdf',false);setVenteState('analyzing',false);setVenteState('form',false);
-  ['v-cam-input','v-file-input'].forEach(eid=>{
-    const old=document.getElementById(eid);
-    if(old){const neu=old.cloneNode(true);old.parentNode.replaceChild(neu,old);}
-  });
-  currentVenteB64='';currentVenteMime='';
-}
-
-function calcVenteTVA(){
+function vCalcTVA(){
   const ht=parseFloat(document.getElementById('v-ht').value)||0;
   const taux=parseFloat(document.getElementById('v-taux').value)||0;
-  if(ht){
-    const tva=ht*taux;
-    document.getElementById('v-tva').value=tva.toFixed(2);
-    document.getElementById('v-ttc').value=(ht+tva).toFixed(2);
-  }
+  if(ht){const tva=ht*taux;document.getElementById('v-tva').value=tva.toFixed(2);document.getElementById('v-ttc').value=(ht+tva).toFixed(2);}
 }
-function calcVenteTTC(){
+function vCalcTTC(){
   const ht=parseFloat(document.getElementById('v-ht').value)||0;
   const tva=parseFloat(document.getElementById('v-tva').value)||0;
-  if(ht&&tva)document.getElementById('v-ttc').value=(ht+tva).toFixed(2);
+  if(ht&&tva) document.getElementById('v-ttc').value=(ht+tva).toFixed(2);
 }
-function saveVente(){
+function vSave(){
   const ttc=parseFloat(document.getElementById('v-ttc').value)||0;
   const date=document.getElementById('v-date').value;
   if(!date||!ttc){showToast('Date et TTC obligatoires','err');return;}
@@ -718,11 +708,14 @@ function saveVente(){
   const tva=parseFloat(document.getElementById('v-tva').value)||0;
   const tvaRate=ht>0?Math.round(tva/ht*1000)/10:parseFloat(document.getElementById('v-taux').value)*100||0;
   const id=Date.now();
-  ventes.push({id,client:document.getElementById('v-client').value,date,quarter:getQ(date),ht,tva,tvaRate,ttc,invoice_number:document.getElementById('v-num').value,description:document.getElementById('v-desc').value,hasImg:currentVenteMime.startsWith('image/')&&!!currentVenteB64});
-  if(currentVenteMime.startsWith('image/')&&currentVenteB64){
-    try{localStorage.setItem('ndf_vimg_'+id,currentVenteB64);}catch(e){}
-  }
-  save();resetVente();renderVentes();showToast('Vente enregistrée ✓');
+  ventes.push({id,client:document.getElementById('v-client').value,date,quarter:getQ(date),ht,tva,tvaRate,ttc,invoice_number:document.getElementById('v-num').value,description:document.getElementById('v-desc').value,hasImg:vMime.startsWith('image/')&&!!vB64});
+  if(vMime.startsWith('image/')&&vB64){try{localStorage.setItem('ndf_vimg_'+id,vB64);}catch(e){}}
+  save();vReset();renderVentes();showToast('Vente enregistrée ✓');
+}
+function vReset(){
+  vSetS('capture'); vB64=''; vMime='';
+  _rebind('v-cam-input',vHandleFile);
+  _rebind('v-file-input',vHandleFile);
 }
 function getFilteredVentes(){
   const q=document.getElementById('fil-vq').value;
@@ -738,84 +731,86 @@ function renderVentes(){
   list.innerHTML=rows.map(v=>{
     const tvaStr=fmt(v.tva)+(v.tvaRate?` · ${v.tvaRate}%`:'');
     const img=v.hasImg?localStorage.getItem('ndf_vimg_'+v.id):null;
-    const iconCell=img?`<img class="img-thumb" src="${img}" onclick="openImgModal('ndf_vimg_${v.id}')" alt="">`:
+    const icon=img?`<img class="img-thumb" src="${img}" onclick="openImgModal('ndf_vimg_${v.id}')" alt="">`:
       `<div class="tx-icon">💶</div>`;
-    return `<div class="tx-item">
-      ${iconCell}
+    return `<div class="tx-item">${icon}
       <div class="tx-body"><div class="tx-name">${v.client||'—'}</div><div class="tx-meta">${v.date}${v.invoice_number?' · '+v.invoice_number:''}</div></div>
       <div class="tx-amount"><div class="tx-ttc">${fmt(v.ttc)}</div><div class="tx-tva" style="color:var(--red)">TVA ${tvaStr}</div></div>
-      <button class="tx-del" onclick="delVente(${v.id})">✕</button>
+      <button class="tx-del" onclick="vDelTx(${v.id})">✕</button>
     </div>`;
   }).join('');
 }
-function delVente(id){if(!confirm('Supprimer ?'))return;ventes=ventes.filter(v=>v.id!==id);try{localStorage.removeItem('ndf_vimg_'+id);}catch(e){}save();renderVentes();showToast('Supprimé');}
+function vDelTx(id){if(!confirm('Supprimer ?'))return;ventes=ventes.filter(v=>v.id!==id);try{localStorage.removeItem('ndf_vimg_'+id);}catch(e){}save();renderVentes();renderAccueil();showToast('Supprimé');}
 
+// ══════════════════════════════════════════════════════════════════════
+// ACCUEIL
+// ══════════════════════════════════════════════════════════════════════
+function renderAccueil(){
+  document.getElementById('h-achats').textContent=fmt(transactions.reduce((a,t)=>a+(t.ttc||0),0));
+  document.getElementById('h-ventes').textContent=fmt(ventes.reduce((a,v)=>a+(v.ttc||0),0));
+  document.getElementById('h-tva-ded').textContent=fmt(transactions.reduce((a,t)=>a+(t.tva||0),0));
+  document.getElementById('h-tva-coll').textContent=fmt(ventes.reduce((a,v)=>a+(v.tva||0),0));
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// TVA
+// ══════════════════════════════════════════════════════════════════════
 function renderTVA(){
   const qs=['Q1','Q2','Q3','Q4'],lb={Q1:'T1 — Jan à Mar',Q2:'T2 — Avr à Juin',Q3:'T3 — Juil à Sep',Q4:'T4 — Oct à Déc'};
-  const tTVAcoll=ventes.reduce((a,v)=>a+(v.tva||0),0);
-  const tTVAded=transactions.reduce((a,t)=>a+(t.tva||0),0);
-  const soldeTotal=tTVAcoll-tTVAded;
-
-  // Résumé annuel en haut
-  const soldeClass=soldeTotal>=0?'a-payer':'credit';
-  const soldeLabel=soldeTotal>=0?'TVA nette à payer':'Crédit de TVA';
-  let html=`<div class="solde-card ${soldeClass}" style="margin-bottom:12px">
-    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:${soldeTotal>=0?'var(--red)':'var(--accent-dark)'};margin-bottom:10px">Bilan annuel</div>
-    <div class="q-row"><span>TVA collectée (ventes)</span><span style="color:var(--red);font-family:var(--mono);font-weight:600">${fmt(tTVAcoll)}</span></div>
-    <div class="q-row"><span>TVA déductible (achats)</span><span style="color:var(--blue);font-family:var(--mono);font-weight:600">${fmt(tTVAded)}</span></div>
-    <div class="q-row" style="border-bottom:none;margin-top:4px;padding-top:8px;border-top:0.5px solid ${soldeTotal>=0?'rgba(176,92,92,0.2)':'rgba(107,143,107,0.2)'}">
-      <span style="font-weight:600">${soldeLabel}</span>
-      <span style="font-family:var(--mono);font-weight:700;font-size:16px;color:${soldeTotal>=0?'var(--red)':'var(--accent-dark)'}">${fmt(Math.abs(soldeTotal))}</span>
+  const tColl=ventes.reduce((a,v)=>a+(v.tva||0),0);
+  const tDed=transactions.reduce((a,t)=>a+(t.tva||0),0);
+  const solde=tColl-tDed;
+  const sc=solde>=0?'a-payer':'credit';
+  const sl=solde>=0?'TVA nette à payer':'Crédit de TVA';
+  let html=`<div class="solde-card ${sc}">
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:${solde>=0?'var(--red)':'var(--accent-dark)'};margin-bottom:10px">Bilan annuel</div>
+    <div class="q-row"><span>TVA collectée (ventes)</span><span style="color:var(--red)">${fmt(tColl)}</span></div>
+    <div class="q-row"><span>TVA déductible (achats)</span><span style="color:var(--blue)">${fmt(tDed)}</span></div>
+    <div class="q-row" style="border-bottom:none;margin-top:4px;padding-top:8px;border-top:0.5px solid ${solde>=0?'rgba(176,92,92,0.2)':'rgba(107,143,107,0.2)'}">
+      <span style="font-weight:600">${sl}</span>
+      <span style="font-weight:700;font-size:16px;color:${solde>=0?'var(--red)':'var(--accent-dark)'}">${fmt(Math.abs(solde))}</span>
     </div>
   </div>`;
-
-  // Détail par trimestre
-  html += qs.map(q=>{
-    const txsAchats=transactions.filter(t=>t.quarter===q);
-    const txsVentes=ventes.filter(v=>v.quarter===q);
-    const tvaAchats=txsAchats.reduce((a,t)=>a+(t.tva||0),0);
-    const tvaVentes=txsVentes.reduce((a,v)=>a+(v.tva||0),0);
-    const solde=tvaVentes-tvaAchats;
-    const nbTotal=txsAchats.length+txsVentes.length;
-    return `<div class="q-card">
-      <div class="q-header">
-        <div class="q-name">${lb[q]}</div>
-        <div class="q-tag ${!nbTotal?'empty':''}">${nbTotal} op.</div>
-      </div>
-      <div class="q-row"><span>TVA collectée</span><span style="color:var(--red);font-family:var(--mono);font-weight:500">${fmt(tvaVentes)}</span></div>
-      <div class="q-row"><span>TVA déductible</span><span style="color:var(--blue);font-family:var(--mono);font-weight:500">${fmt(tvaAchats)}</span></div>
-      <div class="q-row" style="border-bottom:none">
-        <span style="font-weight:600">${solde>=0?'À reverser':'Crédit'}</span>
-        <span style="font-family:var(--mono);font-weight:700;color:${solde>=0?'var(--red)':'var(--accent-dark)'}">${fmt(Math.abs(solde))}</span>
-      </div>
+  html+=qs.map(q=>{
+    const coll=ventes.filter(v=>v.quarter===q).reduce((a,v)=>a+(v.tva||0),0);
+    const ded=transactions.filter(t=>t.quarter===q).reduce((a,t)=>a+(t.tva||0),0);
+    const s=coll-ded; const nb=ventes.filter(v=>v.quarter===q).length+transactions.filter(t=>t.quarter===q).length;
+    return `<div class="q-card"><div class="q-header"><div class="q-name">${lb[q]}</div><div class="q-tag ${!nb?'empty':''}">${nb} op.</div></div>
+      <div class="q-row"><span>TVA collectée</span><span style="color:var(--red)">${fmt(coll)}</span></div>
+      <div class="q-row"><span>TVA déductible</span><span style="color:var(--blue)">${fmt(ded)}</span></div>
+      <div class="q-row" style="border-bottom:none"><span style="font-weight:600">${s>=0?'À reverser':'Crédit'}</span>
+        <span style="font-weight:700;color:${s>=0?'var(--red)':'var(--accent-dark)'}">${fmt(Math.abs(s))}</span></div>
     </div>`;
   }).join('');
-
   document.getElementById('tva-content').innerHTML=html;
 }
 
+// ══════════════════════════════════════════════════════════════════════
+// COMPTES
+// ══════════════════════════════════════════════════════════════════════
 function renderComptes(){
   const cats={};
   transactions.forEach(t=>{if(!cats[t.category])cats[t.category]={ht:0,tva:0,n:0};cats[t.category].ht+=t.ht||0;cats[t.category].tva+=t.tva||0;cats[t.category].n++;});
   const tHT=transactions.reduce((a,t)=>a+(t.ht||0),0),tTVA=transactions.reduce((a,t)=>a+(t.tva||0),0);
   const el=document.getElementById('comptes-content');
-  if(!Object.keys(cats).length){el.innerHTML=`<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">Aucune donnée</div><div class="empty-sub">Scannez vos factures d'abord</div></div>`;return;}
-  el.innerHTML=`<div class="metric-grid" style="margin-bottom:12px">
+  if(!Object.keys(cats).length){el.innerHTML=`<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">Aucune donnée</div><div class="empty-sub">Ajoutez des factures d'achat d'abord</div></div>`;return;}
+  el.innerHTML=`<div class="metric-grid">
     <div class="metric hi"><div class="metric-label">Charges HT</div><div class="metric-value">${fmt(tHT)}</div></div>
     <div class="metric"><div class="metric-label">TVA récupérable</div><div class="metric-value" style="color:var(--blue)">${fmt(tTVA)}</div></div>
-  </div><div class="card">
-    <div class="card-title">Répartition des charges</div>
+  </div><div class="card"><div class="card-title">Répartition des charges</div>
     ${Object.entries(cats).sort((a,b)=>b[1].ht-a[1].ht).map(([cat,v])=>{
       const pct=tHT?(v.ht/tHT*100).toFixed(1):0;
       return `<div class="cat-row"><div style="font-size:18px;width:26px">${icons[cat]||'📎'}</div>
         <div class="cat-name">${cat}<div style="font-size:11px;color:var(--text3);margin-top:2px">${v.n} facture${v.n!==1?'s':''}</div></div>
         <div class="cat-bar-wrap"><div class="cat-bar" style="width:${pct}%"></div></div>
-        <div class="cat-amount">${fmt(v.ht)}</div>
-      </div>`;
+        <div class="cat-amount">${fmt(v.ht)}</div></div>`;
     }).join('')}
   </div>`;
 }
 
+// ══════════════════════════════════════════════════════════════════════
+// EXPORTS
+// ══════════════════════════════════════════════════════════════════════
 function csvRow(cols){return cols.map(c=>`"${String(c||'').replace(/"/g,'""')}"`).join(',');}
 
 function dlCSV(type){
@@ -823,9 +818,9 @@ function dlCSV(type){
   if(type==='tva'){
     rows=[csvRow(['Trimestre','TVA collectée','TVA déductible','Solde net'])];
     ['Q1','Q2','Q3','Q4'].forEach(q=>{
-      const coll=ventes.filter(v=>v.quarter===q).reduce((a,v)=>a+(v.tva||0),0);
-      const ded=transactions.filter(t=>t.quarter===q).reduce((a,t)=>a+(t.tva||0),0);
-      rows.push(csvRow([q,coll.toFixed(2),ded.toFixed(2),(coll-ded).toFixed(2)]));
+      const c=ventes.filter(v=>v.quarter===q).reduce((a,v)=>a+(v.tva||0),0);
+      const d=transactions.filter(t=>t.quarter===q).reduce((a,t)=>a+(t.tva||0),0);
+      rows.push(csvRow([q,c.toFixed(2),d.toFixed(2),(c-d).toFixed(2)]));
     });
     name='declaration_tva.csv';
   }else if(type==='ventes'){
@@ -839,19 +834,19 @@ function dlCSV(type){
     name='comptes_annuels.csv';
   }else{
     rows=[csvRow(['Date','Fournisseur','Catégorie','Paiement','HT','TVA','TTC','Trimestre'])];
-    getFiltered().forEach(t=>rows.push(csvRow([t.date,t.supplier,t.category,t.payment,t.ht,t.tva,t.ttc,t.quarter])));
-    name='notes_frais.csv';
+    getFilteredAchats().forEach(t=>rows.push(csvRow([t.date,t.supplier,t.category,t.payment,t.ht,t.tva,t.ttc,t.quarter])));
+    name='achats.csv';
   }
   dl(name,rows.join('\n'),'text/csv');
 }
 
 function dlXLS(){
   const rows=[['Date','Fournisseur','Catégorie','Paiement','HT','TVA','TTC','Trimestre']];
-  getFiltered().forEach(t=>rows.push([t.date,t.supplier,t.category,t.payment,t.ht,t.tva,t.ttc,t.quarter]));
-  let xml=`<?xml version="1.0"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Worksheet ss:Name="Notes de frais"><Table>`;
+  getFilteredAchats().forEach(t=>rows.push([t.date,t.supplier,t.category,t.payment,t.ht,t.tva,t.ttc,t.quarter]));
+  let xml=`<?xml version="1.0"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Worksheet ss:Name="Achats"><Table>`;
   rows.forEach(r=>{xml+=`<Row>`;r.forEach(c=>{xml+=`<Cell><Data ss:Type="${typeof c==='number'?'Number':'String'}">${c||''}</Data></Cell>`;});xml+=`</Row>`;});
   xml+=`</Table></Worksheet></Workbook>`;
-  dl('notes_frais.xls',xml,'application/vnd.ms-excel');
+  dl('achats.xls',xml,'application/vnd.ms-excel');
 }
 
 function dlPDF(type){
@@ -860,22 +855,17 @@ function dlPDF(type){
   if(type==='tva'){
     title='Déclaration TVA trimestrielle';
     const qs=['Q1','Q2','Q3','Q4'],lb={Q1:'T1',Q2:'T2',Q3:'T3',Q4:'T4'};
-    const tColl=ventes.reduce((a,v)=>a+(v.tva||0),0),tDed=transactions.reduce((a,t)=>a+(t.tva||0),0);
+    const tC=ventes.reduce((a,v)=>a+(v.tva||0),0),tD=transactions.reduce((a,t)=>a+(t.tva||0),0);
     content=`<table><thead><tr><th>Trimestre</th><th>TVA collectée</th><th>TVA déductible</th><th>Solde net</th></tr></thead><tbody>
-      ${qs.map(q=>{
-        const coll=ventes.filter(v=>v.quarter===q).reduce((a,v)=>a+(v.tva||0),0);
-        const ded=transactions.filter(t=>t.quarter===q).reduce((a,t)=>a+(t.tva||0),0);
-        const solde=coll-ded;
-        return`<tr><td>${lb[q]}</td><td style="color:#b05c5c;font-weight:600">${coll.toFixed(2)} €</td><td class="hi">${ded.toFixed(2)} €</td><td style="font-weight:700">${solde.toFixed(2)} €</td></tr>`;
-      }).join('')}
-      <tr class="total"><td>Total annuel</td><td style="color:#b05c5c;font-weight:700">${tColl.toFixed(2)} €</td><td class="hi">${tDed.toFixed(2)} €</td><td style="font-weight:700">${(tColl-tDed).toFixed(2)} €</td></tr>
+      ${qs.map(q=>{const c=ventes.filter(v=>v.quarter===q).reduce((a,v)=>a+(v.tva||0),0);const d=transactions.filter(t=>t.quarter===q).reduce((a,t)=>a+(t.tva||0),0);const s=c-d;return`<tr><td>${lb[q]}</td><td style="color:#b05c5c">${c.toFixed(2)} €</td><td class="hi">${d.toFixed(2)} €</td><td style="font-weight:700">${s.toFixed(2)} €</td></tr>`;}).join('')}
+      <tr class="total"><td>Total</td><td style="color:#b05c5c;font-weight:700">${tC.toFixed(2)} €</td><td class="hi">${tD.toFixed(2)} €</td><td style="font-weight:700">${(tC-tD).toFixed(2)} €</td></tr>
     </tbody></table>`;
   }else if(type==='ventes'){
     title='Factures clients';
     const rows=getFilteredVentes();
     const tTTC=rows.reduce((a,v)=>a+(v.ttc||0),0),tTVA=rows.reduce((a,v)=>a+(v.tva||0),0);
     content=`<table><thead><tr><th>Date</th><th>Client</th><th>N° facture</th><th>HT</th><th>TVA</th><th>TTC</th></tr></thead><tbody>
-      ${rows.map(v=>`<tr><td>${v.date}</td><td>${v.client||'—'}</td><td>${v.invoice_number||'—'}</td><td>${(v.ht||0).toFixed(2)} €</td><td style="color:#b05c5c;font-weight:600">${(v.tva||0).toFixed(2)} €</td><td><strong>${(v.ttc||0).toFixed(2)} €</strong></td></tr>`).join('')}
+      ${rows.map(v=>`<tr><td>${v.date}</td><td>${v.client||'—'}</td><td>${v.invoice_number||'—'}</td><td>${(v.ht||0).toFixed(2)} €</td><td style="color:#b05c5c">${(v.tva||0).toFixed(2)} €</td><td><strong>${(v.ttc||0).toFixed(2)} €</strong></td></tr>`).join('')}
       <tr class="total"><td colspan="4">Total — ${rows.length} factures</td><td>${tTVA.toFixed(2)} €</td><td>${tTTC.toFixed(2)} €</td></tr>
     </tbody></table>`;
   }else if(type==='comptes'){
@@ -887,8 +877,8 @@ function dlPDF(type){
       <tr class="total"><td>Total</td><td>${transactions.length}</td><td>${tHT.toFixed(2)} €</td><td class="hi">${tTVA.toFixed(2)} €</td></tr>
     </tbody></table>`;
   }else{
-    title='Notes de frais';
-    const rows=getFiltered();
+    title='Factures fournisseurs';
+    const rows=getFilteredAchats();
     const tTTC=rows.reduce((a,t)=>a+(t.ttc||0),0),tTVA=rows.reduce((a,t)=>a+(t.tva||0),0);
     content=`<table><thead><tr><th>Date</th><th>Fournisseur</th><th>Catégorie</th><th>Paiement</th><th>HT</th><th>TVA</th><th>TTC</th></tr></thead><tbody>
       ${rows.map(t=>`<tr><td>${t.date}</td><td>${t.supplier||'—'}</td><td>${t.category}</td><td>${t.payment}</td><td>${(t.ht||0).toFixed(2)} €</td><td>${(t.tva||0).toFixed(2)} €</td><td><strong>${(t.ttc||0).toFixed(2)} €</strong></td></tr>`).join('')}
@@ -900,15 +890,14 @@ function dlPDF(type){
     h1{font-size:20px;font-weight:700;margin-bottom:4px;color:#4e6e4e}
     .meta{color:#7a7d6e;font-size:12px;margin-bottom:20px}
     table{width:100%;border-collapse:collapse}
-    th{background:#e8e4d9;padding:8px 10px;text-align:left;font-size:11px;font-weight:700;border-bottom:2px solid #dedad0;text-transform:uppercase;letter-spacing:0.3px;color:#4e6e4e}
+    th{background:#e8e4d9;padding:8px 10px;text-align:left;font-size:11px;font-weight:700;border-bottom:2px solid #dedad0;text-transform:uppercase;color:#4e6e4e}
     td{padding:8px 10px;border-bottom:1px solid #e8e4d9}
     .hi{color:#5e82a0;font-weight:600}
     .total{background:#f0ece3;font-weight:700}
     .footer{margin-top:24px;font-size:10px;color:#aaa99a;border-top:1px solid #dedad0;padding-top:10px}
     @media print{body{margin:15px}}
   </style></head><body>
-    <h1>${title}</h1><div class="meta">Exporté le ${date}</div>
-    ${content}
+    <h1>${title}</h1><div class="meta">Exporté le ${date}</div>${content}
     <div class="footer">Généré automatiquement — TVA réelle trimestrielle</div>
     <script>window.onload=()=>window.print()<\/script>
   </body></html>`;
@@ -923,69 +912,29 @@ function dl(name,content,type){
   a.download=name;a.click();
 }
 
-save();setState('capture',true);setVenteState('capture',true);
+// ── Init ──────────────────────────────────────────────────────────────
+save();
+aSetS('capture');
+vSetS('capture');
+renderAccueil();
 
-// ── PWA : Service Worker ──────────────────────────────────────────────
-const SW_CODE = `
-const CACHE = 'ndf-v1';
-const ASSETS = [self.location.pathname];
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
-  self.skipWaiting();
-});
-self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys =>
-    Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-  ));
-  self.clients.claim();
-});
-self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
-  e.respondWith(
-    fetch(e.request).then(r => {
-      const clone = r.clone();
-      caches.open(CACHE).then(c => c.put(e.request, clone));
-      return r;
-    }).catch(() => caches.match(e.request))
-  );
-});
-`;
-if ('serviceWorker' in navigator) {
-  const blob = new Blob([SW_CODE], { type: 'application/javascript' });
-  const swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl).catch(() => {});
-}
+document.getElementById('a-cam-input').addEventListener('change',aHandleFile);
+document.getElementById('a-file-input').addEventListener('change',aHandleFile);
+document.getElementById('v-cam-input').addEventListener('change',vHandleFile);
+document.getElementById('v-file-input').addEventListener('change',vHandleFile);
 
-// ── PWA : bouton d'installation Chrome ───────────────────────────────
-let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  // Remplace la bannière générique par un vrai bouton d'install
-  const banner = document.getElementById('install-banner');
-  if (banner) {
-    banner.innerHTML = `<span style="font-size:20px">📲</span>
-      <div class="install-text">Installez l'app sur votre écran d'accueil pour l'utiliser hors ligne !</div>
-      <button onclick="installPWA()" style="background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap">Installer</button>
-      <button class="install-close" onclick="this.parentElement.style.display='none'">✕</button>`;
-    banner.style.display = 'flex';
-  }
-});
-function installPWA() {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(() => {
-    deferredPrompt = null;
-    const banner = document.getElementById('install-banner');
-    if (banner) banner.style.display = 'none';
-  });
-}
-window.addEventListener('appinstalled', () => {
-  const banner = document.getElementById('install-banner');
-  if (banner) banner.style.display = 'none';
-  deferredPrompt = null;
-});
+// ── PWA ───────────────────────────────────────────────────────────────
+const SW_CODE=`const CACHE='ndf-v2';const ASSETS=[self.location.pathname];self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim();});self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(fetch(e.request).then(r=>{const cl=r.clone();caches.open(CACHE).then(c=>c.put(e.request,cl));return r;}).catch(()=>caches.match(e.request)));});`;
+if('serviceWorker' in navigator){const b=new Blob([SW_CODE],{type:'application/javascript'});navigator.serviceWorker.register(URL.createObjectURL(b)).catch(()=>{});}
 
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();deferredPrompt=e;
+  const banner=document.getElementById('install-banner');
+  if(banner){banner.innerHTML=`<span style="font-size:20px">📲</span><div class="install-text">Installez l'app sur votre écran d'accueil !</div><button onclick="installPWA()" style="background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap">Installer</button><button class="install-close" onclick="this.parentElement.style.display='none'">✕</button>`;banner.style.display='flex';}
+});
+function installPWA(){if(!deferredPrompt)return;deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;const b=document.getElementById('install-banner');if(b)b.style.display='none';});}
+window.addEventListener('appinstalled',()=>{const b=document.getElementById('install-banner');if(b)b.style.display='none';deferredPrompt=null;});
 </script>
 </body>
 </html>
