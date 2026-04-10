@@ -149,6 +149,12 @@ input[type=date]{color-scheme:light}
 <body>
 <div class="app">
 
+<!-- Inputs file partagés — form.reset() est la seule méthode fiable sur mobile -->
+<form id="file-reset-form" style="display:none">
+  <input type="file" id="shared-cam"  accept="image/*" capture="environment">
+  <input type="file" id="shared-file" accept="image/*,application/pdf">
+</form>
+
 <div class="install-banner" id="install-banner">
   <span style="font-size:20px">📲</span>
   <div class="install-text">Ajoutez l'app à votre écran d'accueil pour l'utiliser hors ligne</div>
@@ -244,16 +250,14 @@ input[type=date]{color-scheme:light}
 
     <!-- États scan achats -->
     <div id="a-state-capture">
-      <button class="btn-big btn-primary" onclick="document.getElementById('a-cam-input').click()">
+      <button class="btn-big btn-primary" onclick="triggerFile('cam','a')">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
         Prendre une photo
       </button>
-      <input type="file" id="a-cam-input" accept="image/*" capture="environment">
-      <button class="btn-big btn-camera" onclick="document.getElementById('a-file-input').click()">
+      <button class="btn-big btn-camera" onclick="triggerFile('file','a')">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         Importer PDF ou image
       </button>
-      <input type="file" id="a-file-input" accept="image/*,application/pdf">
       <button class="btn-big btn-camera" style="margin-top:6px" onclick="aFillForm({})">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Saisie manuelle
@@ -336,16 +340,14 @@ input[type=date]{color-scheme:light}
 
     <!-- États scan ventes -->
     <div id="v-state-capture">
-      <button class="btn-big btn-primary" onclick="document.getElementById('v-cam-input').click()">
+      <button class="btn-big btn-primary" onclick="triggerFile('cam','v')">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
         Prendre une photo
       </button>
-      <input type="file" id="v-cam-input" accept="image/*" capture="environment">
-      <button class="btn-big btn-camera" onclick="document.getElementById('v-file-input').click()">
+      <button class="btn-big btn-camera" onclick="triggerFile('file','v')">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         Importer PDF ou image
       </button>
-      <input type="file" id="v-file-input" accept="image/*,application/pdf">
       <button class="btn-big btn-camera" style="margin-top:6px" onclick="vFillForm({})">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Saisie manuelle
@@ -508,14 +510,24 @@ function openApiKeyModal(){
 function closeApiKeyModal(){document.getElementById('apikey-modal').style.display='none';}
 
 // ── Helper rebind file input ──────────────────────────────────────────
-function _rebind(id, handler){
-  const old=document.getElementById(id); if(!old)return;
-  const n=document.createElement('input');
-  n.type='file'; n.id=id; n.accept=old.accept; n.style.display='none';
-  if(old.hasAttribute('capture')) n.setAttribute('capture',old.getAttribute('capture'));
-  n.addEventListener('change',handler);
-  old.parentNode.replaceChild(n,old);
+// Stratégie : un seul form caché, form.reset() pour vider,
+// puis on redirige vers le bon handler selon le contexte actif
+let _activeContext = 'a'; // 'a' = achats, 'v' = ventes
+
+function triggerFile(type, ctx){
+  _activeContext = ctx;
+  // Réinitialise le form entier pour garantir que l'input est vierge
+  document.getElementById('file-reset-form').reset();
+  document.getElementById(type==='cam'?'shared-cam':'shared-file').click();
 }
+
+function _sharedHandler(e){
+  const f = e.target.files[0]; if(!f) return;
+  if(_activeContext==='a') aHandleFile(f);
+  else vHandleFile(f);
+}
+
+function _rebind(){} // gardé pour compatibilité, plus utilisé
 
 // ── États génériques ──────────────────────────────────────────────────
 function setS(prefix,name){
@@ -532,8 +544,7 @@ let aB64='', aMime='', aPay='';
 
 function aSetS(name){setS('a',name);}
 
-function aHandleFile(e){
-  const f=e.target.files[0]; if(!f)return;
+function aHandleFile(f){
   const r=new FileReader();
   r.onload=ev=>{
     aB64=ev.target.result; aMime=f.type;
@@ -608,8 +619,6 @@ function aSave(){
 }
 function aReset(){
   aSetS('capture'); aB64=''; aMime=''; aPay='';
-  _rebind('a-cam-input',aHandleFile);
-  _rebind('a-file-input',aHandleFile);
 }
 function getFilteredAchats(){
   const q=document.getElementById('fil-q').value;
@@ -644,8 +653,7 @@ let vB64='', vMime='';
 
 function vSetS(name){setS('v',name);}
 
-function vHandleFile(e){
-  const f=e.target.files[0]; if(!f)return;
+function vHandleFile(f){
   const r=new FileReader();
   r.onload=ev=>{
     vB64=ev.target.result; vMime=f.type;
@@ -714,8 +722,6 @@ function vSave(){
 }
 function vReset(){
   vSetS('capture'); vB64=''; vMime='';
-  _rebind('v-cam-input',vHandleFile);
-  _rebind('v-file-input',vHandleFile);
 }
 function getFilteredVentes(){
   const q=document.getElementById('fil-vq').value;
@@ -918,13 +924,12 @@ aSetS('capture');
 vSetS('capture');
 renderAccueil();
 
-document.getElementById('a-cam-input').addEventListener('change',aHandleFile);
-document.getElementById('a-file-input').addEventListener('change',aHandleFile);
-document.getElementById('v-cam-input').addEventListener('change',vHandleFile);
-document.getElementById('v-file-input').addEventListener('change',vHandleFile);
+// Branchement des inputs partagés sur le handler unique
+document.getElementById('shared-cam').addEventListener('change', _sharedHandler);
+document.getElementById('shared-file').addEventListener('change', _sharedHandler);
 
 // ── PWA ───────────────────────────────────────────────────────────────
-const SW_CODE=`const CACHE='ndf-v2';const ASSETS=[self.location.pathname];self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim();});self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(fetch(e.request).then(r=>{const cl=r.clone();caches.open(CACHE).then(c=>c.put(e.request,cl));return r;}).catch(()=>caches.match(e.request)));});`;
+const SW_CODE=`const CACHE='ndf-v3';const ASSETS=[self.location.pathname];self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim();});self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(fetch(e.request).then(r=>{const cl=r.clone();caches.open(CACHE).then(c=>c.put(e.request,cl));return r;}).catch(()=>caches.match(e.request)));});`;
 if('serviceWorker' in navigator){const b=new Blob([SW_CODE],{type:'application/javascript'});navigator.serviceWorker.register(URL.createObjectURL(b)).catch(()=>{});}
 
 let deferredPrompt=null;
