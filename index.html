@@ -143,11 +143,33 @@ input[type=date]{color-scheme:light}
 
 <div class="toast" id="toast"></div>
 
+<!-- MODAL CLÉ API -->
+<div id="apikey-modal" style="display:none;position:absolute;inset:0;background:rgba(46,48,40,0.55);z-index:200;align-items:center;justify-content:center;padding:24px">
+  <div style="background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius);padding:24px;width:100%;max-width:400px;box-shadow:0 8px 32px rgba(46,48,40,0.18)">
+    <div style="font-size:17px;font-weight:600;margin-bottom:6px">Clé API Anthropic</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.5">Nécessaire pour l'analyse automatique des factures. Stockée uniquement sur cet appareil, jamais envoyée ailleurs.</div>
+    <div class="field">
+      <label>Votre clé API (commence par sk-ant-…)</label>
+      <input id="apikey-input" type="password" placeholder="sk-ant-api03-…" style="font-family:var(--mono);font-size:13px">
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button class="btn-big btn-primary" style="flex:1;padding:13px" onclick="saveApiKey()">Enregistrer</button>
+      <button class="btn-sm" style="padding:13px 16px" onclick="closeApiKeyModal()">Annuler</button>
+    </div>
+    <div style="margin-top:12px;text-align:center;font-size:12px;color:var(--text3)">
+      Obtenez une clé sur <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent)">console.anthropic.com</a>
+    </div>
+  </div>
+</div>
+
 <!-- SCAN -->
 <div class="screen active" id="screen-scan">
   <div class="topbar">
     <div><div class="topbar-title">Scanner</div><div class="topbar-sub">Ajouter une facture</div></div>
-    <div class="topbar-badge" id="tx-count-badge">0 tx</div>
+    <div style="display:flex;align-items:flex-start;gap:8px;margin-top:4px">
+      <button onclick="openApiKeyModal()" title="Configurer la clé API" style="background:none;border:0.5px solid var(--border2);border-radius:8px;padding:5px 8px;cursor:pointer;color:var(--text2);font-size:16px;line-height:1">🔑</button>
+      <div class="topbar-badge" id="tx-count-badge">0 tx</div>
+    </div>
   </div>
   <div class="scroll-area" style="padding-top:16px">
 
@@ -293,9 +315,27 @@ input[type=date]{color-scheme:light}
 
 <script>
 const SK='ndf_v2';
+const SK_API='ndf_apikey';
 let transactions=JSON.parse(localStorage.getItem(SK)||'[]');
 let currentPay='',currentB64='',currentMime='';
 const icons={Restauration:'🍽️',Transport:'🚗',Hébergement:'🏨',Fournitures:'📦',Télécom:'📡',Logiciels:'💻',Formation:'📚',Marketing:'📣',Autre:'📎'};
+
+function getApiKey(){return localStorage.getItem(SK_API)||'';}
+function saveApiKey(){
+  const v=document.getElementById('apikey-input').value.trim();
+  if(!v.startsWith('sk-ant-')){showToast('Clé invalide — doit commencer par sk-ant-','err');return;}
+  localStorage.setItem(SK_API,v);
+  closeApiKeyModal();
+  showToast('Clé API enregistrée ✓');
+}
+function openApiKeyModal(){
+  const m=document.getElementById('apikey-modal');
+  m.style.display='flex';
+  const existing=getApiKey();
+  document.getElementById('apikey-input').value=existing?'••••••••••••••••••••':'';
+  document.getElementById('apikey-input').placeholder=existing?'(clé enregistrée — remplacer si besoin)':'sk-ant-api03-…';
+}
+function closeApiKeyModal(){document.getElementById('apikey-modal').style.display='none';}
 
 function save(){localStorage.setItem(SK,JSON.stringify(transactions));document.getElementById('tx-count-badge').textContent=transactions.length+' tx';}
 function fmt(n){return parseFloat(n||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
@@ -342,14 +382,23 @@ function choosePDF(mode){
 }
 
 async function extractAI(){
+  const apiKey=getApiKey();
+  if(!apiKey){
+    setState('analyzing',false);
+    openApiKeyModal();
+    showToast('Entrez votre clé API pour l\'analyse IA','err');
+    fillForm({});
+    return;
+  }
   const isImg=currentMime.startsWith('image/');
   const prompt=`Analyse cette facture. Retourne UNIQUEMENT du JSON valide (sans markdown) avec: {"supplier":"","date":"YYYY-MM-DD","ht":0,"tva":0,"ttc":0,"invoice_number":"","category":"parmi Restauration Transport Hébergement Fournitures Télécom Logiciels Formation Marketing Autre","description":""}`;
   let content=isImg?
     [{type:'image',source:{type:'base64',media_type:currentMime,data:currentB64.split(',')[1]}},{type:'text',text:prompt}]:
     [{type:'document',source:{type:'base64',media_type:'application/pdf',data:currentB64.split(',')[1]}},{type:'text',text:prompt}];
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content}]})});
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content}]})});
     const d=await r.json();
+    if(d.error){fillForm({});showToast('Erreur API : '+d.error.message,'err');return;}
     const txt=(d.content||[]).map(c=>c.text||'').join('');
     let ex={};try{ex=JSON.parse(txt.replace(/```json|```/g,'').trim());}catch(e){}
     fillForm(ex);
