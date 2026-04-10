@@ -128,7 +128,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .empty-icon{font-size:40px;margin-bottom:12px}
 .empty-title{font-size:16px;font-weight:600;margin-bottom:6px;color:var(--text)}
 .empty-sub{font-size:13px;color:var(--text3)}
-.install-banner{background:var(--accent-dim);border:0.5px solid rgba(107,143,107,0.3);border-radius:var(--radius-sm);padding:12px 14px;margin:12px 16px 0;display:flex;align-items:center;gap:10px}
+.img-thumb{width:40px;height:40px;border-radius:12px;object-fit:cover;border:0.5px solid var(--border);cursor:pointer;flex-shrink:0}
+.img-modal{display:none;position:absolute;inset:0;background:rgba(46,48,40,0.8);z-index:300;align-items:center;justify-content:center;padding:20px}
+.img-modal img{max-width:100%;max-height:80vh;border-radius:var(--radius);object-fit:contain}
+.img-modal-close{position:absolute;top:16px;right:16px;background:var(--bg2);border:none;border-radius:50%;width:36px;height:36px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text)}
 .install-text{flex:1;font-size:12px;color:var(--accent-dark);line-height:1.4}
 .install-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px}
 input[type=file]{display:none}
@@ -145,6 +148,12 @@ input[type=date]{color-scheme:light}
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- MODAL IMAGE -->
+<div class="img-modal" id="img-modal" onclick="closeImgModal()">
+  <img id="img-modal-src" src="" alt="">
+  <button class="img-modal-close" onclick="closeImgModal()">✕</button>
+</div>
 
 <!-- MODAL CLÉ API -->
 <div id="apikey-modal" style="display:none;position:absolute;inset:0;background:rgba(46,48,40,0.55);z-index:200;align-items:center;justify-content:center;padding:24px">
@@ -282,15 +291,49 @@ input[type=date]{color-scheme:light}
       <div class="metric hi"><div class="metric-label">CA TTC</div><div class="metric-value" id="vm-ttc">0 €</div></div>
       <div class="metric"><div class="metric-label">TVA collectée</div><div class="metric-value" id="vm-tva" style="color:var(--red)">0 €</div></div>
     </div>
-    <div style="margin-bottom:12px">
-      <button class="btn-big btn-primary" onclick="openVenteForm()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Ajouter une vente
+    <div id="vente-state-capture">
+      <button class="btn-big btn-primary" onclick="document.getElementById('v-cam-input').click()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        Prendre une photo
       </button>
+      <input type="file" id="v-cam-input" accept="image/*" capture="environment" onchange="handleVenteFile(event)">
+      <button class="btn-big btn-camera" onclick="document.getElementById('v-file-input').click()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Importer PDF ou image
+      </button>
+      <input type="file" id="v-file-input" accept="image/*,application/pdf" onchange="handleVenteFile(event)">
+      <button class="btn-big btn-camera" style="margin-top:6px" onclick="openVenteForm()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Saisie manuelle
+      </button>
+    </div>
+
+    <div id="vente-state-pdf" style="display:none">
+      <div class="card">
+        <div class="card-title">Fichier PDF détecté</div>
+        <div class="pdf-choice">
+          <button class="pdf-opt" onclick="chooseVentePDF('ai')"><div class="pdf-opt-title">Analyse IA</div><div class="pdf-opt-sub">Extraction automatique</div></button>
+          <button class="pdf-opt" onclick="chooseVentePDF('manual')"><div class="pdf-opt-title">Saisie manuelle</div><div class="pdf-opt-sub">Remplissage direct</div></button>
+        </div>
+        <button class="btn-sm da" onclick="resetVente()">Annuler</button>
+      </div>
+    </div>
+
+    <div id="vente-state-analyzing" style="display:none">
+      <div class="card">
+        <div class="spinner-wrap">
+          <div class="spinner"></div>
+          <div class="spinner-label" id="v-analyze-label">Analyse de la facture...</div>
+        </div>
+      </div>
     </div>
 
     <!-- Formulaire vente (masqué par défaut) -->
     <div id="vente-form" style="display:none">
+      <div class="preview-wrap" id="v-preview-wrap" style="display:none">
+        <img id="v-preview-img" class="preview-img" src="" alt="">
+        <div class="preview-badge" id="v-preview-badge"></div>
+      </div>
       <div class="card">
         <div class="card-title">Nouvelle vente</div>
         <div class="field-row">
@@ -315,7 +358,7 @@ input[type=date]{color-scheme:light}
         </div>
         <div class="field"><label>Description</label><input id="v-desc" type="text" placeholder="Prestation, produit…"></div>
         <button class="btn-big btn-primary" onclick="saveVente()" style="margin-top:8px">Enregistrer</button>
-        <div style="margin-top:8px;text-align:center"><button class="btn-sm da" onclick="closeVenteForm()">Annuler</button></div>
+        <div style="margin-top:8px;text-align:center"><button class="btn-sm da" onclick="resetVente()">Annuler</button></div>
       </div>
     </div>
 
@@ -516,13 +559,25 @@ function saveTx(){
   const ttc=parseFloat(document.getElementById('f-ttc').value)||0;
   const date=document.getElementById('f-date').value;
   if(!date||!ttc){showToast('Date et TTC obligatoires','err');return;}
-  transactions.push({id:Date.now(),supplier:document.getElementById('f-supplier').value,date,quarter:getQ(date),ht:parseFloat(document.getElementById('f-ht').value)||0,tva:parseFloat(document.getElementById('f-tva').value)||0,ttc,invoice_number:document.getElementById('f-num').value,category:document.getElementById('f-cat').value,description:document.getElementById('f-desc').value,payment:currentPay==='cb'?'CB perso':'Compte pro'});
+  const ht=parseFloat(document.getElementById('f-ht').value)||0;
+  const tva=parseFloat(document.getElementById('f-tva').value)||0;
+  const tvaRate=ht>0?Math.round(tva/ht*1000)/10:0;
+  const id=Date.now();
+  transactions.push({id,supplier:document.getElementById('f-supplier').value,date,quarter:getQ(date),ht,tva,tvaRate,ttc,invoice_number:document.getElementById('f-num').value,category:document.getElementById('f-cat').value,description:document.getElementById('f-desc').value,payment:currentPay==='cb'?'CB perso':'Compte pro',hasImg:currentMime.startsWith('image/')&&!!currentB64});
+  if(currentMime.startsWith('image/')&&currentB64){
+    try{localStorage.setItem('ndf_img_'+id,currentB64);}catch(e){}
+  }
   save();resetScan();showToast('Facture enregistrée ✓');
 }
 
 function resetScan(){
   setState('capture',true);setState('pdf',false);setState('analyzing',false);setState('form',false);
-  document.getElementById('cam-input').value='';document.getElementById('file-input').value='';
+  // Recréer les inputs file pour forcer le reset sur iOS/Android
+  ['cam-input','file-input'].forEach(id=>{
+    const old=document.getElementById(id);
+    const neu=old.cloneNode(true);
+    old.parentNode.replaceChild(neu,old);
+  });
   currentPay='';currentB64='';currentMime='';
 }
 
@@ -540,28 +595,107 @@ function renderTx(){
   document.getElementById('tx-sub').textContent=rows.length+' facture'+(rows.length!==1?'s':'');
   const list=document.getElementById('tx-list');
   if(!rows.length){list.innerHTML=`<div class="empty" style="padding:32px 0"><div class="empty-icon">🧾</div><div class="empty-title">Aucune facture</div><div class="empty-sub">Scannez votre première facture</div></div>`;return;}
-  list.innerHTML=rows.map(t=>`<div class="tx-item">
-    <div class="tx-icon">${icons[t.category]||'📎'}</div>
-    <div class="tx-body"><div class="tx-name">${t.supplier||'—'}</div><div class="tx-meta">${t.date} · <span class="badge badge-${t.payment==='CB perso'?'cb':'pro'}">${t.payment}</span></div></div>
-    <div class="tx-amount"><div class="tx-ttc">${fmt(t.ttc)}</div><div class="tx-tva">TVA ${fmt(t.tva)}</div></div>
-    <button class="tx-del" onclick="delTx(${t.id})">✕</button>
-  </div>`).join('');
+  list.innerHTML=rows.map(t=>{
+    const tvaStr=fmt(t.tva)+(t.tvaRate?` · ${t.tvaRate}%`:'');
+    const img=t.hasImg?localStorage.getItem('ndf_img_'+t.id):null;
+    const iconCell=img?`<img class="img-thumb" src="${img}" onclick="openImgModal('ndf_img_${t.id}')" alt="">`:`<div class="tx-icon">${icons[t.category]||'📎'}</div>`;
+    return `<div class="tx-item">
+      ${iconCell}
+      <div class="tx-body"><div class="tx-name">${t.supplier||'—'}</div><div class="tx-meta">${t.date} · <span class="badge badge-${t.payment==='CB perso'?'cb':'pro'}">${t.payment}</span></div></div>
+      <div class="tx-amount"><div class="tx-ttc">${fmt(t.ttc)}</div><div class="tx-tva">TVA ${tvaStr}</div></div>
+      <button class="tx-del" onclick="delTx(${t.id})">✕</button>
+    </div>`;
+  }).join('');
 }
 
-function delTx(id){if(!confirm('Supprimer ?'))return;transactions=transactions.filter(t=>t.id!==id);save();renderTx();showToast('Supprimé');}
+function openImgModal(key){
+  const src=localStorage.getItem(key);
+  if(!src)return;
+  const m=document.getElementById('img-modal');
+  document.getElementById('img-modal-src').src=src;
+  m.style.display='flex';
+}
+function closeImgModal(){
+  document.getElementById('img-modal').style.display='none';
+  document.getElementById('img-modal-src').src='';
+}
+
+function delTx(id){if(!confirm('Supprimer ?'))return;transactions=transactions.filter(t=>t.id!==id);try{localStorage.removeItem('ndf_img_'+id);}catch(e){}save();renderTx();showToast('Supprimé');}
 
 // ── VENTES ────────────────────────────────────────────────────────────
-function openVenteForm(){
-  document.getElementById('vente-form').style.display='block';
-  document.getElementById('v-date').value=new Date().toISOString().slice(0,10);
-  document.getElementById('v-ht').value='';
-  document.getElementById('v-tva').value='';
-  document.getElementById('v-ttc').value='';
-  document.getElementById('v-client').value='';
-  document.getElementById('v-num').value='';
-  document.getElementById('v-desc').value='';
+let currentVenteB64='',currentVenteMime='';
+
+function setVenteState(name,show){
+  ['capture','pdf','analyzing','form'].forEach(s=>{
+    document.getElementById('vente-state-'+s).style.display=(s===name&&show)?'block':'none';
+  });
 }
-function closeVenteForm(){document.getElementById('vente-form').style.display='none';}
+
+function handleVenteFile(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    currentVenteB64=ev.target.result;currentVenteMime=file.type;
+    setVenteState('capture',false);
+    if(file.type==='application/pdf'){setVenteState('pdf',true);}
+    else{setVenteState('analyzing',true);document.getElementById('v-analyze-label').textContent="L'IA analyse votre facture...";extractVenteAI();}
+  };
+  reader.readAsDataURL(file);
+}
+
+function chooseVentePDF(mode){
+  setVenteState('pdf',false);
+  if(mode==='manual'){fillVenteForm({});}
+  else{setVenteState('analyzing',true);document.getElementById('v-analyze-label').textContent="Extraction du PDF...";extractVenteAI();}
+}
+
+async function extractVenteAI(){
+  const apiKey=getApiKey();
+  if(!apiKey){setVenteState('analyzing',false);openApiKeyModal();showToast('Entrez votre clé API pour l\'analyse IA','err');fillVenteForm({});return;}
+  const isImg=currentVenteMime.startsWith('image/');
+  const prompt=`Analyse cette facture client (vente). Retourne UNIQUEMENT du JSON valide (sans markdown) avec: {"client":"","date":"YYYY-MM-DD","ht":0,"tva":0,"ttc":0,"invoice_number":"","description":""}`;
+  let content=isImg?
+    [{type:'image',source:{type:'base64',media_type:currentVenteMime,data:currentVenteB64.split(',')[1]}},{type:'text',text:prompt}]:
+    [{type:'document',source:{type:'base64',media_type:'application/pdf',data:currentVenteB64.split(',')[1]}},{type:'text',text:prompt}];
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content}]})});
+    const d=await r.json();
+    if(d.error){fillVenteForm({});showToast('Erreur API : '+d.error.message,'err');return;}
+    const txt=(d.content||[]).map(c=>c.text||'').join('');
+    let ex={};try{ex=JSON.parse(txt.replace(/```json|```/g,'').trim());}catch(e){}
+    fillVenteForm(ex);
+    if(ex.client)showToast('Extraction IA réussie ✓','info');
+  }catch(e){fillVenteForm({});showToast('Saisie manuelle requise','err');}
+}
+
+function fillVenteForm(d){
+  setVenteState('analyzing',false);setVenteState('form',true);
+  const pw=document.getElementById('v-preview-wrap'),pi=document.getElementById('v-preview-img');
+  if(currentVenteMime&&currentVenteMime.startsWith('image/')){pi.src=currentVenteB64;pw.style.display='block';document.getElementById('v-preview-badge').textContent=d.client?'IA ✓':'';}
+  else{pw.style.display='none';}
+  document.getElementById('v-client').value=d.client||'';
+  document.getElementById('v-date').value=d.date||new Date().toISOString().slice(0,10);
+  document.getElementById('v-ht').value=d.ht!=null?parseFloat(d.ht).toFixed(2):'';
+  document.getElementById('v-tva').value=d.tva!=null?parseFloat(d.tva).toFixed(2):'';
+  document.getElementById('v-ttc').value=d.ttc!=null?parseFloat(d.ttc).toFixed(2):'';
+  document.getElementById('v-num').value=d.invoice_number||'';
+  document.getElementById('v-desc').value=d.description||'';
+}
+
+function openVenteForm(){
+  currentVenteB64='';currentVenteMime='';
+  fillVenteForm({});
+}
+
+function resetVente(){
+  setVenteState('capture',true);setVenteState('pdf',false);setVenteState('analyzing',false);setVenteState('form',false);
+  ['v-cam-input','v-file-input'].forEach(eid=>{
+    const old=document.getElementById(eid);
+    if(old){const neu=old.cloneNode(true);old.parentNode.replaceChild(neu,old);}
+  });
+  currentVenteB64='';currentVenteMime='';
+}
+
 function calcVenteTVA(){
   const ht=parseFloat(document.getElementById('v-ht').value)||0;
   const taux=parseFloat(document.getElementById('v-taux').value)||0;
@@ -580,8 +714,15 @@ function saveVente(){
   const ttc=parseFloat(document.getElementById('v-ttc').value)||0;
   const date=document.getElementById('v-date').value;
   if(!date||!ttc){showToast('Date et TTC obligatoires','err');return;}
-  ventes.push({id:Date.now(),client:document.getElementById('v-client').value,date,quarter:getQ(date),ht:parseFloat(document.getElementById('v-ht').value)||0,tva:parseFloat(document.getElementById('v-tva').value)||0,ttc,invoice_number:document.getElementById('v-num').value,description:document.getElementById('v-desc').value});
-  save();closeVenteForm();renderVentes();showToast('Vente enregistrée ✓');
+  const ht=parseFloat(document.getElementById('v-ht').value)||0;
+  const tva=parseFloat(document.getElementById('v-tva').value)||0;
+  const tvaRate=ht>0?Math.round(tva/ht*1000)/10:parseFloat(document.getElementById('v-taux').value)*100||0;
+  const id=Date.now();
+  ventes.push({id,client:document.getElementById('v-client').value,date,quarter:getQ(date),ht,tva,tvaRate,ttc,invoice_number:document.getElementById('v-num').value,description:document.getElementById('v-desc').value,hasImg:currentVenteMime.startsWith('image/')&&!!currentVenteB64});
+  if(currentVenteMime.startsWith('image/')&&currentVenteB64){
+    try{localStorage.setItem('ndf_vimg_'+id,currentVenteB64);}catch(e){}
+  }
+  save();resetVente();renderVentes();showToast('Vente enregistrée ✓');
 }
 function getFilteredVentes(){
   const q=document.getElementById('fil-vq').value;
@@ -594,14 +735,20 @@ function renderVentes(){
   document.getElementById('vente-sub').textContent=rows.length+' facture'+(rows.length!==1?'s':'');
   const list=document.getElementById('vente-list');
   if(!rows.length){list.innerHTML=`<div class="empty" style="padding:32px 0"><div class="empty-icon">💶</div><div class="empty-title">Aucune vente</div><div class="empty-sub">Ajoutez votre première facture client</div></div>`;return;}
-  list.innerHTML=rows.map(v=>`<div class="tx-item">
-    <div class="tx-icon">💶</div>
-    <div class="tx-body"><div class="tx-name">${v.client||'—'}</div><div class="tx-meta">${v.date}${v.invoice_number?' · '+v.invoice_number:''}</div></div>
-    <div class="tx-amount"><div class="tx-ttc">${fmt(v.ttc)}</div><div class="tx-tva" style="color:var(--red)">TVA ${fmt(v.tva)}</div></div>
-    <button class="tx-del" onclick="delVente(${v.id})">✕</button>
-  </div>`).join('');
+  list.innerHTML=rows.map(v=>{
+    const tvaStr=fmt(v.tva)+(v.tvaRate?` · ${v.tvaRate}%`:'');
+    const img=v.hasImg?localStorage.getItem('ndf_vimg_'+v.id):null;
+    const iconCell=img?`<img class="img-thumb" src="${img}" onclick="openImgModal('ndf_vimg_${v.id}')" alt="">`:
+      `<div class="tx-icon">💶</div>`;
+    return `<div class="tx-item">
+      ${iconCell}
+      <div class="tx-body"><div class="tx-name">${v.client||'—'}</div><div class="tx-meta">${v.date}${v.invoice_number?' · '+v.invoice_number:''}</div></div>
+      <div class="tx-amount"><div class="tx-ttc">${fmt(v.ttc)}</div><div class="tx-tva" style="color:var(--red)">TVA ${tvaStr}</div></div>
+      <button class="tx-del" onclick="delVente(${v.id})">✕</button>
+    </div>`;
+  }).join('');
 }
-function delVente(id){if(!confirm('Supprimer ?'))return;ventes=ventes.filter(v=>v.id!==id);save();renderVentes();showToast('Supprimé');}
+function delVente(id){if(!confirm('Supprimer ?'))return;ventes=ventes.filter(v=>v.id!==id);try{localStorage.removeItem('ndf_vimg_'+id);}catch(e){}save();renderVentes();showToast('Supprimé');}
 
 function renderTVA(){
   const qs=['Q1','Q2','Q3','Q4'],lb={Q1:'T1 — Jan à Mar',Q2:'T2 — Avr à Juin',Q3:'T3 — Juil à Sep',Q4:'T4 — Oct à Déc'};
@@ -776,7 +923,7 @@ function dl(name,content,type){
   a.download=name;a.click();
 }
 
-save();setState('capture',true);
+save();setState('capture',true);setVenteState('capture',true);
 
 // ── PWA : Service Worker ──────────────────────────────────────────────
 const SW_CODE = `
