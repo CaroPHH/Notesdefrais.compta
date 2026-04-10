@@ -39,10 +39,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .topbar-sub{font-size:13px;color:var(--text2);margin-top:2px}
 .topbar-badge{background:var(--accent-dim);color:var(--accent-dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;font-family:var(--mono);margin-top:4px;border:0.5px solid rgba(107,143,107,0.25)}
 .bottom-nav{display:flex;background:var(--bg2);border-top:0.5px solid var(--border);padding-bottom:var(--safe-bottom);flex-shrink:0;box-shadow:0 -1px 0 rgba(90,100,80,0.07)}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0;border:none;background:none;color:var(--text3);cursor:pointer;font-family:var(--font);transition:color 0.15s}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0;border:none;background:none;color:var(--text3);cursor:pointer;font-family:var(--font);transition:color 0.15s}
 .nav-btn.active{color:var(--accent)}
-.nav-btn svg{width:22px;height:22px}
-.nav-btn span{font-size:10px;font-weight:500}
+.nav-btn svg{width:20px;height:20px}
+.nav-btn span{font-size:9px;font-weight:500}
+.solde-card{border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
+.solde-card.a-payer{background:rgba(176,92,92,0.08);border:0.5px solid rgba(176,92,92,0.3)}
+.solde-card.credit{background:rgba(107,143,107,0.08);border:0.5px solid rgba(107,143,107,0.3)}
 .card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
 .card-title{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px}
 .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
@@ -266,6 +269,66 @@ input[type=date]{color-scheme:light}
   </div>
 </div>
 
+<!-- VENTES -->
+<div class="screen" id="screen-ventes">
+  <div class="topbar">
+    <div><div class="topbar-title">Ventes</div><div class="topbar-sub" id="vente-sub">Factures clients</div></div>
+    <select id="fil-vq" style="background:var(--bg3);border:0.5px solid var(--border2);border-radius:var(--radius-sm);padding:6px 10px;color:var(--text);font-family:var(--font);font-size:12px;-webkit-appearance:none;margin-top:4px" onchange="renderVentes()">
+      <option value="">Tous</option><option value="Q1">T1</option><option value="Q2">T2</option><option value="Q3">T3</option><option value="Q4">T4</option>
+    </select>
+  </div>
+  <div class="scroll-area" style="padding-top:12px">
+    <div class="metric-grid">
+      <div class="metric hi"><div class="metric-label">CA TTC</div><div class="metric-value" id="vm-ttc">0 €</div></div>
+      <div class="metric"><div class="metric-label">TVA collectée</div><div class="metric-value" id="vm-tva" style="color:var(--red)">0 €</div></div>
+    </div>
+    <div style="margin-bottom:12px">
+      <button class="btn-big btn-primary" onclick="openVenteForm()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Ajouter une vente
+      </button>
+    </div>
+
+    <!-- Formulaire vente (masqué par défaut) -->
+    <div id="vente-form" style="display:none">
+      <div class="card">
+        <div class="card-title">Nouvelle vente</div>
+        <div class="field-row">
+          <div class="field"><label>Client</label><input id="v-client" type="text" placeholder="Nom client"></div>
+          <div class="field"><label>Date</label><input id="v-date" type="date"></div>
+        </div>
+        <div class="field-row3">
+          <div class="field"><label>HT (€)</label><input id="v-ht" type="number" step="0.01" inputmode="decimal" placeholder="0.00" oninput="calcVenteTTC()"></div>
+          <div class="field"><label>TVA (€)</label><input id="v-tva" type="number" step="0.01" inputmode="decimal" placeholder="0.00" oninput="calcVenteTTC()"></div>
+          <div class="field"><label>TTC (€)</label><input id="v-ttc" type="number" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>N° facture</label><input id="v-num" type="text" placeholder="FAC-001"></div>
+          <div class="field"><label>Taux TVA</label>
+            <select id="v-taux" onchange="calcVenteTVA()">
+              <option value="0.20">20 %</option>
+              <option value="0.10">10 %</option>
+              <option value="0.055">5,5 %</option>
+              <option value="0">0 %</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label>Description</label><input id="v-desc" type="text" placeholder="Prestation, produit…"></div>
+        <button class="btn-big btn-primary" onclick="saveVente()" style="margin-top:8px">Enregistrer</button>
+        <div style="margin-top:8px;text-align:center"><button class="btn-sm da" onclick="closeVenteForm()">Annuler</button></div>
+      </div>
+    </div>
+
+    <div class="section-title">Factures clients</div>
+    <div class="card" style="padding:0 16px"><div id="vente-list"></div></div>
+    <div class="section-title">Exporter</div>
+    <div class="export-row">
+      <button class="btn-sm" onclick="dlCSV('ventes')">CSV</button>
+      <button class="btn-sm ac" onclick="dlPDF('ventes')">PDF</button>
+    </div>
+  </div>
+</div>
+
 <!-- TVA -->
 <div class="screen" id="screen-tva">
   <div class="topbar"><div><div class="topbar-title">Déclaration TVA</div><div class="topbar-sub">Régime trimestriel réel</div></div></div>
@@ -299,7 +362,11 @@ input[type=date]{color-scheme:light}
   </button>
   <button class="nav-btn" onclick="goScreen('transactions',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-    <span>Factures</span>
+    <span>Achats</span>
+  </button>
+  <button class="nav-btn" onclick="goScreen('ventes',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    <span>Ventes</span>
   </button>
   <button class="nav-btn" onclick="goScreen('tva',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -319,6 +386,8 @@ const SK_API='ndf_apikey';
 let transactions=JSON.parse(localStorage.getItem(SK)||'[]');
 let currentPay='',currentB64='',currentMime='';
 const icons={Restauration:'🍽️',Transport:'🚗',Hébergement:'🏨',Fournitures:'📦',Télécom:'📡',Logiciels:'💻',Formation:'📚',Marketing:'📣',Autre:'📎'};
+const SK_VENTES='ndf_ventes';
+let ventes=JSON.parse(localStorage.getItem(SK_VENTES)||'[]');
 
 function getApiKey(){return localStorage.getItem(SK_API)||'';}
 function saveApiKey(){
@@ -337,7 +406,11 @@ function openApiKeyModal(){
 }
 function closeApiKeyModal(){document.getElementById('apikey-modal').style.display='none';}
 
-function save(){localStorage.setItem(SK,JSON.stringify(transactions));document.getElementById('tx-count-badge').textContent=transactions.length+' tx';}
+function save(){
+  localStorage.setItem(SK,JSON.stringify(transactions));
+  localStorage.setItem(SK_VENTES,JSON.stringify(ventes));
+  document.getElementById('tx-count-badge').textContent=transactions.length+' tx';
+}
 function fmt(n){return parseFloat(n||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
 function getQ(d){const m=new Date(d).getMonth()+1;return m<=3?'Q1':m<=6?'Q2':m<=9?'Q3':'Q4';}
 
@@ -353,6 +426,7 @@ function goScreen(name,el){
   document.getElementById('screen-'+name).classList.add('active');
   el.classList.add('active');
   if(name==='transactions')renderTx();
+  if(name==='ventes')renderVentes();
   if(name==='tva')renderTVA();
   if(name==='comptes')renderComptes();
 }
@@ -476,21 +550,101 @@ function renderTx(){
 
 function delTx(id){if(!confirm('Supprimer ?'))return;transactions=transactions.filter(t=>t.id!==id);save();renderTx();showToast('Supprimé');}
 
+// ── VENTES ────────────────────────────────────────────────────────────
+function openVenteForm(){
+  document.getElementById('vente-form').style.display='block';
+  document.getElementById('v-date').value=new Date().toISOString().slice(0,10);
+  document.getElementById('v-ht').value='';
+  document.getElementById('v-tva').value='';
+  document.getElementById('v-ttc').value='';
+  document.getElementById('v-client').value='';
+  document.getElementById('v-num').value='';
+  document.getElementById('v-desc').value='';
+}
+function closeVenteForm(){document.getElementById('vente-form').style.display='none';}
+function calcVenteTVA(){
+  const ht=parseFloat(document.getElementById('v-ht').value)||0;
+  const taux=parseFloat(document.getElementById('v-taux').value)||0;
+  if(ht){
+    const tva=ht*taux;
+    document.getElementById('v-tva').value=tva.toFixed(2);
+    document.getElementById('v-ttc').value=(ht+tva).toFixed(2);
+  }
+}
+function calcVenteTTC(){
+  const ht=parseFloat(document.getElementById('v-ht').value)||0;
+  const tva=parseFloat(document.getElementById('v-tva').value)||0;
+  if(ht&&tva)document.getElementById('v-ttc').value=(ht+tva).toFixed(2);
+}
+function saveVente(){
+  const ttc=parseFloat(document.getElementById('v-ttc').value)||0;
+  const date=document.getElementById('v-date').value;
+  if(!date||!ttc){showToast('Date et TTC obligatoires','err');return;}
+  ventes.push({id:Date.now(),client:document.getElementById('v-client').value,date,quarter:getQ(date),ht:parseFloat(document.getElementById('v-ht').value)||0,tva:parseFloat(document.getElementById('v-tva').value)||0,ttc,invoice_number:document.getElementById('v-num').value,description:document.getElementById('v-desc').value});
+  save();closeVenteForm();renderVentes();showToast('Vente enregistrée ✓');
+}
+function getFilteredVentes(){
+  const q=document.getElementById('fil-vq').value;
+  return ventes.filter(v=>!q||v.quarter===q).sort((a,b)=>b.date.localeCompare(a.date));
+}
+function renderVentes(){
+  const rows=getFilteredVentes();
+  document.getElementById('vm-ttc').textContent=fmt(rows.reduce((a,v)=>a+(v.ttc||0),0));
+  document.getElementById('vm-tva').textContent=fmt(rows.reduce((a,v)=>a+(v.tva||0),0));
+  document.getElementById('vente-sub').textContent=rows.length+' facture'+(rows.length!==1?'s':'');
+  const list=document.getElementById('vente-list');
+  if(!rows.length){list.innerHTML=`<div class="empty" style="padding:32px 0"><div class="empty-icon">💶</div><div class="empty-title">Aucune vente</div><div class="empty-sub">Ajoutez votre première facture client</div></div>`;return;}
+  list.innerHTML=rows.map(v=>`<div class="tx-item">
+    <div class="tx-icon">💶</div>
+    <div class="tx-body"><div class="tx-name">${v.client||'—'}</div><div class="tx-meta">${v.date}${v.invoice_number?' · '+v.invoice_number:''}</div></div>
+    <div class="tx-amount"><div class="tx-ttc">${fmt(v.ttc)}</div><div class="tx-tva" style="color:var(--red)">TVA ${fmt(v.tva)}</div></div>
+    <button class="tx-del" onclick="delVente(${v.id})">✕</button>
+  </div>`).join('');
+}
+function delVente(id){if(!confirm('Supprimer ?'))return;ventes=ventes.filter(v=>v.id!==id);save();renderVentes();showToast('Supprimé');}
+
 function renderTVA(){
   const qs=['Q1','Q2','Q3','Q4'],lb={Q1:'T1 — Jan à Mar',Q2:'T2 — Avr à Juin',Q3:'T3 — Juil à Sep',Q4:'T4 — Oct à Déc'};
-  const tHT=transactions.reduce((a,t)=>a+(t.ht||0),0),tTVA=transactions.reduce((a,t)=>a+(t.tva||0),0);
-  document.getElementById('tva-content').innerHTML=qs.map(q=>{
-    const txs=transactions.filter(t=>t.quarter===q);
-    const ht=txs.reduce((a,t)=>a+(t.ht||0),0),tva=txs.reduce((a,t)=>a+(t.tva||0),0),ttc=txs.reduce((a,t)=>a+(t.ttc||0),0);
-    return `<div class="q-card"><div class="q-header"><div class="q-name">${lb[q]}</div><div class="q-tag ${!txs.length?'empty':''}">${txs.length} facture${txs.length!==1?'s':''}</div></div>
-      <div class="q-row"><span>Base HT</span><span>${fmt(ht)}</span></div>
-      <div class="q-row hl"><span>TVA déductible</span><span>${fmt(tva)}</span></div>
-      <div class="q-row"><span>Total TTC</span><span>${fmt(ttc)}</span></div>
-    </div>`;
-  }).join('')+`<div class="q-card" style="border-color:rgba(107,143,107,0.3);background:rgba(107,143,107,0.06)">
-    <div class="q-row"><span>HT cumulé</span><span style="font-family:var(--mono);font-weight:500">${fmt(tHT)}</span></div>
-    <div class="q-row hl"><span>TVA totale récupérable</span><span style="font-weight:600;color:var(--blue)">${fmt(tTVA)}</span></div>
+  const tTVAcoll=ventes.reduce((a,v)=>a+(v.tva||0),0);
+  const tTVAded=transactions.reduce((a,t)=>a+(t.tva||0),0);
+  const soldeTotal=tTVAcoll-tTVAded;
+
+  // Résumé annuel en haut
+  const soldeClass=soldeTotal>=0?'a-payer':'credit';
+  const soldeLabel=soldeTotal>=0?'TVA nette à payer':'Crédit de TVA';
+  let html=`<div class="solde-card ${soldeClass}" style="margin-bottom:12px">
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:${soldeTotal>=0?'var(--red)':'var(--accent-dark)'};margin-bottom:10px">Bilan annuel</div>
+    <div class="q-row"><span>TVA collectée (ventes)</span><span style="color:var(--red);font-family:var(--mono);font-weight:600">${fmt(tTVAcoll)}</span></div>
+    <div class="q-row"><span>TVA déductible (achats)</span><span style="color:var(--blue);font-family:var(--mono);font-weight:600">${fmt(tTVAded)}</span></div>
+    <div class="q-row" style="border-bottom:none;margin-top:4px;padding-top:8px;border-top:0.5px solid ${soldeTotal>=0?'rgba(176,92,92,0.2)':'rgba(107,143,107,0.2)'}">
+      <span style="font-weight:600">${soldeLabel}</span>
+      <span style="font-family:var(--mono);font-weight:700;font-size:16px;color:${soldeTotal>=0?'var(--red)':'var(--accent-dark)'}">${fmt(Math.abs(soldeTotal))}</span>
+    </div>
   </div>`;
+
+  // Détail par trimestre
+  html += qs.map(q=>{
+    const txsAchats=transactions.filter(t=>t.quarter===q);
+    const txsVentes=ventes.filter(v=>v.quarter===q);
+    const tvaAchats=txsAchats.reduce((a,t)=>a+(t.tva||0),0);
+    const tvaVentes=txsVentes.reduce((a,v)=>a+(v.tva||0),0);
+    const solde=tvaVentes-tvaAchats;
+    const nbTotal=txsAchats.length+txsVentes.length;
+    return `<div class="q-card">
+      <div class="q-header">
+        <div class="q-name">${lb[q]}</div>
+        <div class="q-tag ${!nbTotal?'empty':''}">${nbTotal} op.</div>
+      </div>
+      <div class="q-row"><span>TVA collectée</span><span style="color:var(--red);font-family:var(--mono);font-weight:500">${fmt(tvaVentes)}</span></div>
+      <div class="q-row"><span>TVA déductible</span><span style="color:var(--blue);font-family:var(--mono);font-weight:500">${fmt(tvaAchats)}</span></div>
+      <div class="q-row" style="border-bottom:none">
+        <span style="font-weight:600">${solde>=0?'À reverser':'Crédit'}</span>
+        <span style="font-family:var(--mono);font-weight:700;color:${solde>=0?'var(--red)':'var(--accent-dark)'}">${fmt(Math.abs(solde))}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('tva-content').innerHTML=html;
 }
 
 function renderComptes(){
@@ -520,9 +674,17 @@ function csvRow(cols){return cols.map(c=>`"${String(c||'').replace(/"/g,'""')}"`
 function dlCSV(type){
   let rows,name;
   if(type==='tva'){
-    rows=[csvRow(['Trimestre','Base HT','TVA déductible','Nb factures'])];
-    ['Q1','Q2','Q3','Q4'].forEach(q=>{const txs=transactions.filter(t=>t.quarter===q);rows.push(csvRow([q,txs.reduce((a,t)=>a+(t.ht||0),0).toFixed(2),txs.reduce((a,t)=>a+(t.tva||0),0).toFixed(2),txs.length]));});
+    rows=[csvRow(['Trimestre','TVA collectée','TVA déductible','Solde net'])];
+    ['Q1','Q2','Q3','Q4'].forEach(q=>{
+      const coll=ventes.filter(v=>v.quarter===q).reduce((a,v)=>a+(v.tva||0),0);
+      const ded=transactions.filter(t=>t.quarter===q).reduce((a,t)=>a+(t.tva||0),0);
+      rows.push(csvRow([q,coll.toFixed(2),ded.toFixed(2),(coll-ded).toFixed(2)]));
+    });
     name='declaration_tva.csv';
+  }else if(type==='ventes'){
+    rows=[csvRow(['Date','Client','N° facture','HT','TVA','TTC','Trimestre'])];
+    getFilteredVentes().forEach(v=>rows.push(csvRow([v.date,v.client,v.invoice_number,v.ht,v.tva,v.ttc,v.quarter])));
+    name='ventes.csv';
   }else if(type==='comptes'){
     const cats={};transactions.forEach(t=>{if(!cats[t.category])cats[t.category]={ht:0,tva:0,n:0};cats[t.category].ht+=t.ht||0;cats[t.category].tva+=t.tva||0;cats[t.category].n++;});
     rows=[csvRow(['Catégorie','Nb factures','Charges HT','TVA récupérable'])];
@@ -551,10 +713,23 @@ function dlPDF(type){
   if(type==='tva'){
     title='Déclaration TVA trimestrielle';
     const qs=['Q1','Q2','Q3','Q4'],lb={Q1:'T1',Q2:'T2',Q3:'T3',Q4:'T4'};
-    const tHT=transactions.reduce((a,t)=>a+(t.ht||0),0),tTVA=transactions.reduce((a,t)=>a+(t.tva||0),0);
-    content=`<table><thead><tr><th>Trimestre</th><th>Base HT</th><th>TVA déductible</th><th>Factures</th></tr></thead><tbody>
-      ${qs.map(q=>{const txs=transactions.filter(t=>t.quarter===q);return`<tr><td>${lb[q]}</td><td>${txs.reduce((a,t)=>a+(t.ht||0),0).toFixed(2)} €</td><td class="hi">${txs.reduce((a,t)=>a+(t.tva||0),0).toFixed(2)} €</td><td>${txs.length}</td></tr>`;}).join('')}
-      <tr class="total"><td>Total annuel</td><td>${tHT.toFixed(2)} €</td><td class="hi">${tTVA.toFixed(2)} €</td><td>${transactions.length}</td></tr>
+    const tColl=ventes.reduce((a,v)=>a+(v.tva||0),0),tDed=transactions.reduce((a,t)=>a+(t.tva||0),0);
+    content=`<table><thead><tr><th>Trimestre</th><th>TVA collectée</th><th>TVA déductible</th><th>Solde net</th></tr></thead><tbody>
+      ${qs.map(q=>{
+        const coll=ventes.filter(v=>v.quarter===q).reduce((a,v)=>a+(v.tva||0),0);
+        const ded=transactions.filter(t=>t.quarter===q).reduce((a,t)=>a+(t.tva||0),0);
+        const solde=coll-ded;
+        return`<tr><td>${lb[q]}</td><td style="color:#b05c5c;font-weight:600">${coll.toFixed(2)} €</td><td class="hi">${ded.toFixed(2)} €</td><td style="font-weight:700">${solde.toFixed(2)} €</td></tr>`;
+      }).join('')}
+      <tr class="total"><td>Total annuel</td><td style="color:#b05c5c;font-weight:700">${tColl.toFixed(2)} €</td><td class="hi">${tDed.toFixed(2)} €</td><td style="font-weight:700">${(tColl-tDed).toFixed(2)} €</td></tr>
+    </tbody></table>`;
+  }else if(type==='ventes'){
+    title='Factures clients';
+    const rows=getFilteredVentes();
+    const tTTC=rows.reduce((a,v)=>a+(v.ttc||0),0),tTVA=rows.reduce((a,v)=>a+(v.tva||0),0);
+    content=`<table><thead><tr><th>Date</th><th>Client</th><th>N° facture</th><th>HT</th><th>TVA</th><th>TTC</th></tr></thead><tbody>
+      ${rows.map(v=>`<tr><td>${v.date}</td><td>${v.client||'—'}</td><td>${v.invoice_number||'—'}</td><td>${(v.ht||0).toFixed(2)} €</td><td style="color:#b05c5c;font-weight:600">${(v.tva||0).toFixed(2)} €</td><td><strong>${(v.ttc||0).toFixed(2)} €</strong></td></tr>`).join('')}
+      <tr class="total"><td colspan="4">Total — ${rows.length} factures</td><td>${tTVA.toFixed(2)} €</td><td>${tTTC.toFixed(2)} €</td></tr>
     </tbody></table>`;
   }else if(type==='comptes'){
     title='Bilan des charges annuelles';
